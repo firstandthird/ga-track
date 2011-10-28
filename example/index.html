@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title></title>
+        <script src="live.js"></script>
+        <script src="jquery-1.6.4.min.js"></script>
+        <script src="../dist/clickd.js"></script>
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-26605966-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+    </head>
+    <body>
+        <div id="module1">
+            <a href="http://www.google.com">Google</a>
+            <a href="http://www.bing.com">Bing</a>
+            <a href="http://www.yahoo.com">Yahoo</a>
+        </div>
+        <script>
+            clickd._debug = true;
+            clickd.track("searchEngines", $("#module1"));
+            setTimeout(function() {
+                $("a:eq(0)").click();
+            }, 1500);
+        </script>
+    </body>
+</html>

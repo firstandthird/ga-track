@@ -1,0 +1,15 @@
+{
+  "name": "clickd",
+  "description": "a javascript click tracking library for google analytics",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jgallen23/clickd",
+  "author": "Greg Allen <@jgaui> (http://jga.me)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jgallen23/clickd.git"
+  },
+  "dependencies": {
+  },
+  "main": "./dist/clickd.js",
+  "keywords": ["ender", "analytics"]
+}
