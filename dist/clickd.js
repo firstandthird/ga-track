@@ -14,6 +14,7 @@
 
 var clickd = {
   _debug: false,
+  clickDelay: 100,
   label: window.location.href,
   log: function(msg) {
     if (this._debug)
@@ -28,7 +29,7 @@ var clickd = {
       self._trackClick(name, href);
       setTimeout(function() {
         window.location = href;
-      }, 100);
+      }, self.clickDelay);
       return false;
     });
   },
