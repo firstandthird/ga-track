@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>clickd Tests</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  <script src="../components/assert/assert.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <!--<script src="../components/blanket/dist/qunit/blanket.min.js" data-cover-adapter="../components/blanket/src/adapters/mocha-blanket.js"></script>-->
+  <script>mocha.setup('tdd')</script>
+</head>
+<body>
+  <div id="mocha"></div>
+  <div id="fixture" style="display: none">
+    <a id="link1" href="#test">Click Me</a>
+    <a id="link1a" href="#test">Click Me</a>
+    <a id="link2" data-clickd href="#test">Click Me</a>
+    <a id="link3" data-clickd="category" href="#test">Click Me</a>
+    <a id="link4" data-clickd data-clickd-label="label" href="#test">Click Me</a>
+    <a id="link5" data-clickd data-clickd-action="action" href="#test">Click Me</a>
+  </div>
+  <script src="../components/jquery/jquery.js"></script>
+  <script src="../dist/clickd.js" data-cover></script>
+  <script src="clickd.test.js"></script>
+  <script>
+    if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+      mocha.run().globals(['LiveReload']);
+    }
+  </script>
+</body>
+</html>

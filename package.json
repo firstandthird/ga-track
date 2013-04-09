@@ -1,15 +1,17 @@
 {
   "name": "clickd",
-  "description": "a javascript click tracking library for google analytics",
-  "version": "0.0.1",
-  "homepage": "https://github.com/jgallen23/clickd",
-  "author": "Greg Allen <@jgaui> (http://jga.me)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jgallen23/clickd.git"
-  },
-  "dependencies": {
-  },
-  "main": "./dist/clickd.js",
-  "keywords": ["ender", "analytics"]
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "mocha": "~1.9.0",
+    "grunt": "~0.4.1",
+    "grunt-reloadr": "~0.1.2",
+    "grunt-mocha": "~0.3.0",
+    "grunt-contrib-concat": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-jshint": "~0.4.2",
+    "grunt-contrib-connect": "~0.2.0",
+    "grunt-contrib-watch": "~0.3.1",
+    "grunt-plato": "~0.2.0"
+  }
 }
