@@ -1,6 +1,6 @@
 /*!
  * clickd - Click tracking for Google Analytics
- * v0.1.0
+ * v0.1.1
  * https://github.com/jgallen23/clickd
  * copyright Greg Allen 2013
  * MIT License
@@ -31,11 +31,15 @@
       var label = el.data('clickd-label') || opt.label || href;
       var action = el.data('clickd-action') || opt.action || el.text();
 
-      el.on('click', function() {
+      el.on('click', function(e) {
+
         trackEvent(cat, action, label);
-        setTimeout(function() {
-          window.location = href;
-        }, delay);
+        if (!e.metaKey) {
+          e.preventDefault();
+          setTimeout(function() {
+            window.location = href;
+          }, delay);
+        }
       });
 
     });
