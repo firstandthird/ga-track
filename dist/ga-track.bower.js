@@ -1,8 +1,8 @@
 /*!
- * clickd - Click tracking for Google Analytics
+ * ga-track - Click tracking for Google Analytics
  * v0.1.1
- * https://github.com/jgallen23/clickd
- * copyright Greg Allen 2013
+ * https://github.com/firstandthird/ga-track
+ * copyright First+Third 2014
  * MIT License
 */
 (function($) {
