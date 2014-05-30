@@ -10,6 +10,11 @@ window._gaq = {
   }
 };
 
+var gaData = [];
+window.ga = function() {
+  gaData = arguments;
+};
+
 suite('ga-track', function() {
 
   setup(function() {
@@ -102,5 +107,26 @@ suite('ga-track', function() {
     assert.equal(data[0][1], 'ga-track');
     assert.equal(data[0][2], 'action');
     assert.equal(data[0][3], '#test');
+  });
+
+  // These tests need to be last since it removed the window._gaq object
+  suite('universal tracking', function() {
+    setup(function() {
+      delete window._gaq;
+    });
+
+    test('should use universal tracking', function() {
+      var el = $('#link6').gaTrack();
+      $('#link6').click();
+
+      var data = gaData;
+      console.log(data);
+      assert.equal(data.length, 5);
+      assert.equal(data[0], 'send');
+      assert.equal(data[1], 'event');
+      assert.equal(data[2], 'ga-track');
+      assert.equal(data[3], 'action');
+      assert.equal(data[4], '#test');
+    });
   });
 });
