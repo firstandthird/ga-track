@@ -6,7 +6,7 @@
  * MIT License
 */
 (function($) {
-  $.fn.clickd = function(opt) {
+  $.fn.gaTrack = function(opt) {
     var delay = 100;
 
     if (!opt) {
@@ -27,9 +27,9 @@
 
       var href = el.attr('href');
 
-      var cat = el.data('clickd') || opt.category || 'clickd';
-      var label = el.data('clickd-label') || opt.label || href;
-      var action = el.data('clickd-action') || opt.action || el.text();
+      var cat = el.data('ga-track') || opt.category || 'ga-track';
+      var label = el.data('ga-track-label') || opt.label || href;
+      var action = el.data('ga-track-action') || opt.action || el.text();
 
       el.on('click', function(e) {
 
@@ -47,7 +47,7 @@
 
   //data-api
   $(function() {
-    $('[data-clickd]').clickd();
+    $('[data-ga-track]').gaTrack();
   });
 
 

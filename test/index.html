@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>clickd Tests</title>
+  <title>ga-track Tests</title>
   <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
   <script src="../bower_components/assert/assert.js"></script>
   <script src="../node_modules/mocha/mocha.js"></script>
@@ -14,10 +14,10 @@
   <div id="fixture" style="display: none">
     <a id="link1" href="#test">Click Me</a>
     <a id="link1a" href="#test">Click Me</a>
-    <a id="link2" data-clickd href="#test">Click Me</a>
-    <a id="link3" data-clickd="category" href="#test">Click Me</a>
-    <a id="link4" data-clickd data-clickd-label="label" href="#test">Click Me</a>
-    <a id="link5" data-clickd data-clickd-action="action" href="#test">Click Me</a>
+    <a id="link2" data-ga-track href="#test">Click Me</a>
+    <a id="link3" data-ga-track="category" href="#test">Click Me</a>
+    <a id="link4" data-ga-track data-ga-track-label="label" href="#test">Click Me</a>
+    <a id="link5" data-ga-track data-ga-track-action="action" href="#test">Click Me</a>
   </div>
   <script src="../bower_components/jquery/dist/jquery.js"></script>
   <script src="../dist/ga-track.bower.js" data-cover></script>
