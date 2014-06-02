@@ -109,6 +109,10 @@ suite('ga-track', function() {
     assert.equal(data[0][3], '#test');
   });
 
+  test('api exists', function() {
+    assert.equal(typeof $.gaTrack, 'function');
+  });
+
   // These tests need to be last since it removed the window._gaq object
   suite('universal tracking', function() {
     setup(function() {
