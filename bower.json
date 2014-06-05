@@ -1,0 +1,23 @@
+{
+  "name": "ga-track",
+  "description": "Click tracking for Google Analytics",
+  "version": "0.1.1",
+  "homepage": "https://github.com/firstandthird/ga-track",
+  "license": "MIT",
+  "copyright": "First+Third",
+  "main": "dist/ga-track.bower.js",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "assert": "*",
+    "blanket": "*"
+  },
+  "ignore": [
+    "test",
+    "example",
+    "lib",
+    "Gruntfile.js",
+    "package.json",
+    "grunt"
+  ]
+}

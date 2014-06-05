@@ -10,19 +10,24 @@ window._gaq = {
   }
 };
 
-suite('clickd', function() {
+var gaData = [];
+window.ga = function() {
+  gaData = arguments;
+};
+
+suite('ga-track', function() {
 
   setup(function() {
     window._gaq.clear();
   });
 
-  test('clickd plugin exists', function() {
+  test('ga-track plugin exists', function() {
     var el = $('#fixture');
-    assert.equal(typeof el.clickd, 'function');
+    assert.equal(typeof el.gaTrack, 'function');
   });
 
   test('returns el', function() {
-    var el = $('#link1').clickd();
+    var el = $('#link1').gaTrack();
     assert.equal(el.length, 1);
     el.off('click');
   });
@@ -30,14 +35,14 @@ suite('clickd', function() {
   test('call jquery plugin', function() {
     $('#link1')
     //call plugin
-      .clickd()
+      .gaTrack()
     //simulate click
       .click();
 
     var data = window._gaq.data;
     assert.equal(data.length, 1);
     assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'clickd');
+    assert.equal(data[0][1], 'ga-track');
     assert.equal(data[0][2], 'Click Me');
     assert.equal(data[0][3], '#test');
   });
@@ -45,7 +50,7 @@ suite('clickd', function() {
   test('call jquery plugin with options', function() {
     $('#link1a')
     //call plugin
-      .clickd({ category: 'category', label: 'label', action: 'action' })
+      .gaTrack({ category: 'category', label: 'label', action: 'action' })
     //simulate click
       .click();
 
@@ -63,7 +68,7 @@ suite('clickd', function() {
       var data = window._gaq.data;
       assert.equal(data.length, 1);
       assert.equal(data[0][0], '_trackEvent');
-      assert.equal(data[0][1], 'clickd');
+      assert.equal(data[0][1], 'ga-track');
       assert.equal(data[0][2], 'Click Me');
       assert.equal(data[0][3], '#test');
       done();
@@ -88,7 +93,7 @@ suite('clickd', function() {
     var data = window._gaq.data;
     assert.equal(data.length, 1);
     assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'clickd');
+    assert.equal(data[0][1], 'ga-track');
     assert.equal(data[0][2], 'Click Me');
     assert.equal(data[0][3], 'label');
   });
@@ -99,8 +104,33 @@ suite('clickd', function() {
     var data = window._gaq.data;
     assert.equal(data.length, 1);
     assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'clickd');
+    assert.equal(data[0][1], 'ga-track');
     assert.equal(data[0][2], 'action');
     assert.equal(data[0][3], '#test');
+  });
+
+  test('api exists', function() {
+    assert.equal(typeof $.gaTrack, 'function');
+  });
+
+  // These tests need to be last since it removed the window._gaq object
+  suite('universal tracking', function() {
+    setup(function() {
+      delete window._gaq;
+    });
+
+    test('should use universal tracking', function() {
+      var el = $('#link6').gaTrack();
+      $('#link6').click();
+
+      var data = gaData;
+      console.log(data);
+      assert.equal(data.length, 5);
+      assert.equal(data[0], 'send');
+      assert.equal(data[1], 'event');
+      assert.equal(data[2], 'ga-track');
+      assert.equal(data[3], 'action');
+      assert.equal(data[4], '#test');
+    });
   });
 });
