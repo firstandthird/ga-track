@@ -1,4 +1,16 @@
 
+0.2.0 / 2014-06-04 
+==================
+
+	* renamed to ga-track
+  * fixed broken tests
+  * Merge pull request #6 from firstandthird/feature/updates
+  * Added access to $.gaTrack
+  * Added universal analytics support.
+  * Added check for which mouse click.
+  * Renamed and updated tests/examples
+  * Updated build scripts.
+
 0.1.1 / 2013-05-02 
 ==================
 
