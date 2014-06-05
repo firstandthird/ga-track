@@ -7,6 +7,7 @@
   "copyright": "First+Third",
   "main": "dist/ga-track.bower.js",
   "dependencies": {
+    "jquery": "*"
   },
   "devDependencies": {
     "assert": "*",
