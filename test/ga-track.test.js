@@ -113,6 +113,23 @@ suite('ga-track', function() {
     assert.equal(typeof $.gaTrack, 'function');
   });
 
+  test('scroll', function(done) {
+    var timer = 600;
+    $('#fixture').show();
+    $(window).unbind('scroll');
+    $.gaTrackScroll();
+
+    $('html, body').scrollTop(0).animate({scrollTop: 5000}, timer);
+
+
+    setTimeout(function() {
+      assert.equal(window._gaq.data.length, 5);
+      $('#fixture').hide();
+      done();
+    }, timer);
+
+  });
+
   // These tests need to be last since it removed the window._gaq object
   suite('universal tracking', function() {
     setup(function() {
