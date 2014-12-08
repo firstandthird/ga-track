@@ -1,6 +1,6 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.2.0
+ * v0.3.0
  * https://github.com/firstandthird/ga-track
  * copyright First+Third 2014
  * MIT License
@@ -17,6 +17,57 @@
     } else {
       ga('send', 'event', category, action, label);
     }
+  };
+
+  $.gaTrackScroll = function() {
+    var $body = $('body');
+    var scrollPercent = 0;
+    var lastPos = 0;
+    var scrollTriggers = {
+      'scroll': false,
+      '25': false,
+      '50': false,
+      '75': false,
+      '100': false
+    };
+
+    var scrollCheck = function() {
+      scrollPercent = ~~(5*Math.round((window.scrollY/($body.height()-window.innerHeight)*100)/5));
+
+      if (lastPos !== scrollPercent) {
+        lastPos = scrollPercent;
+      }
+
+      if (!scrollTriggers.scroll) {
+        scrollTriggers.scroll = true;
+        $.gaTrack('scroll', document.location.toString(), 'Scrolled');
+      }
+
+      switch(scrollPercent) {
+        case 25:
+          if (scrollTriggers['25']) break;
+          $.gaTrack('scroll', document.location.toString(), 'Scrolled 25%');
+          scrollTriggers['25'] = true;
+          break;
+        case 50:
+          if (scrollTriggers['50']) break;
+          $.gaTrack('scroll', document.location.toString(), 'Scrolled 50%');
+          scrollTriggers['50'] = true;
+          break;
+        case 75:
+          if (scrollTriggers['75']) break;
+          $.gaTrack('scroll', document.location.toString(), 'Scrolled 75%');
+          scrollTriggers['75'] = true;
+          break;
+        case 100:
+          if (scrollTriggers['100']) break;
+          $.gaTrack('scroll', document.location.toString(), 'Scrolled 100%');
+          scrollTriggers['100'] = true;
+          break;
+      }
+    };
+
+    $(window).on('scroll', scrollCheck);
   };
 
   $.fn.gaTrack = function(opt) {
