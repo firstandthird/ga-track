@@ -1,12 +1,15 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.3.0
+ * v0.4.0
  * https://github.com/firstandthird/ga-track
  * copyright First+Third 2014
  * MIT License
 */
 (function($) {
   $.gaTrack = function(category, action, label) {
+    if ($.gaTrack.debug) {
+      return console.log('GA TRACK', category, action, label);
+    }
     if (typeof _gaq === 'undefined' && typeof ga === 'undefined') {
       return this;
     }
@@ -17,6 +20,8 @@
       ga('send', 'event', category, action, label);
     }
   };
+
+  $.gaTrack.debug = false;
 
   $.gaTrackScroll = function() {
     var $body = $('body');

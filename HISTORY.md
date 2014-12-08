@@ -1,4 +1,9 @@
 
+0.4.0 / 2014-12-08 
+==================
+
+  * added $.gaTrack.debug that will console log tracking messages
+
 0.3.0 / 2014-12-08 
 ==================
 
