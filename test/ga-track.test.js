@@ -1,3 +1,4 @@
+/*global assert,test,suite,setup*/
 
 //ga stub
 window._gaq = {
@@ -128,6 +129,26 @@ suite('ga-track', function() {
       done();
     }, timer);
 
+  });
+
+  test('debug', function(done) {
+    $('#link1')
+      .click();
+
+    var data = window._gaq.data;
+    assert.equal(data.length, 1);
+    window._gaq.clear();
+    assert.equal(window._gaq.data.length, 0);
+    $.gaTrack.debug = true;
+
+    $('#link1')
+      .gaTrack()
+      .click();
+
+    data = window._gaq.data;
+    assert.equal(data.length, 0);
+    $.gaTrack.debug = false;
+    done();
   });
 
   // These tests need to be last since it removed the window._gaq object
