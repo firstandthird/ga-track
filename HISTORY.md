@@ -1,4 +1,11 @@
 
+0.5.0 / 2014-12-12 
+==================
+
+  * added $.gaTrack.defaults to tweak delay
+  * better checking for existing of ga
+  * updated example to use universal analytics
+
 0.4.1 / 2014-12-11 
 ==================
 

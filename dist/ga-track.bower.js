@@ -1,20 +1,21 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.4.1
+ * v0.5.0
  * https://github.com/firstandthird/ga-track
  * copyright First+Third 2014
  * MIT License
 */
+/* global window,_gaq,ga */
 (function($) {
   $.gaTrack = function(category, action, label) {
     if ($.gaTrack.debug) {
       return console.log('GA TRACK', category, action, label);
     }
-    if (typeof _gaq === 'undefined' && typeof ga === 'undefined') {
+    if (typeof window._gaq === 'undefined' && typeof window.ga === 'undefined') {
       return this;
     }
 
-    if(typeof _gaq !== 'undefined') {
+    if(typeof window._gaq !== 'undefined') {
       _gaq.push(['_trackEvent', category, action, label, null, false]);
     } else {
       ga('send', 'event', category, action, label);
@@ -74,12 +75,8 @@
     $(window).on('scroll', scrollCheck);
   };
 
-  $.fn.gaTrack = function(opt) {
-    var delay = 100;
-
-    if (!opt) {
-      opt = {};
-    }
+  $.fn.gaTrack = function(options) {
+    var opt = $.extend({}, $.gaTrack.defaults, options);
 
     return this.each(function() {
 
@@ -97,11 +94,15 @@
           e.preventDefault();
           setTimeout(function() {
             window.location = href;
-          }, delay);
+          }, opt.delay);
         }
       });
 
     });
+  };
+
+  $.gaTrack.defaults = {
+    delay: 200
   };
 
   //data-api
