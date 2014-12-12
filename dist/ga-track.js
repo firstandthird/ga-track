@@ -1,6 +1,6 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.4.0
+ * v0.4.1
  * https://github.com/firstandthird/ga-track
  * copyright First+Third 2014
  * MIT License
@@ -94,7 +94,7 @@
 
       el.on('click', function(e) {
         $.gaTrack(cat, action, label);
-        if (!e.metaKey && e.which === 1) {
+        if (href && !e.metaKey && e.which === 1) {
           e.preventDefault();
           setTimeout(function() {
             window.location = href;
