@@ -1,8 +1,8 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.5.0
+ * v0.6.0
  * https://github.com/firstandthird/ga-track
- * copyright First+Third 2014
+ * copyright First+Third 2015
  * MIT License
 */
 
@@ -84,6 +84,7 @@
       var el = $(this);
 
       var href = el.attr('href');
+      var target = el.attr('target');
 
       var cat = el.data('ga-track') || opt.category || 'ga-track';
       var label = el.data('ga-track-label') || opt.label || href;
@@ -94,7 +95,11 @@
         if (href && !e.metaKey && e.which === 1) {
           e.preventDefault();
           setTimeout(function() {
-            window.location = href;
+            if (target) {
+              window.open(href, target);
+            } else {
+              window.location = href;
+            }
           }, opt.delay);
         }
       });
