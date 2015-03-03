@@ -1,4 +1,10 @@
 
+0.7.0 / 2015-03-03
+==================
+
+  * Bit better href overrides
+  * Added ability to cancel out link (for social buttons, etc).
+
 0.6.0 / 2015-02-11
 ==================
 
