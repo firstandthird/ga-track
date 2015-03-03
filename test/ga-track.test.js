@@ -151,6 +151,15 @@ suite('ga-track', function() {
     done();
   });
 
+  test('cancel clicks', function(done) {
+    $('#link7').click();
+
+    setTimeout(function() {
+      assert.ok(window.location.hash !== '#testclick');
+      done();
+    }, 600);
+  });
+
   // These tests need to be last since it removed the window._gaq object
   suite('universal tracking', function() {
     setup(function() {
