@@ -1,6 +1,6 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.7.0
+ * v0.8.0
  * https://github.com/firstandthird/ga-track
  * copyright First+Third 2015
  * MIT License
@@ -93,14 +93,10 @@
         $.gaTrack(cat, action, label);
         if (el.data('ga-track-href') === false) {
           e.preventDefault();
-        } else if (href && !e.metaKey && e.which === 1) {
+        } else if (href && !e.metaKey && e.which === 1 && target != '_blank') {
           e.preventDefault();
           setTimeout(function() {
-            if (target) {
-              window.open(href, target);
-            } else {
-              window.location = href;
-            }
+            window.location = href;
           }, opt.delay);
         }
       });

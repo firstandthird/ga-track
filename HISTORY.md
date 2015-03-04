@@ -1,4 +1,10 @@
 
+0.8.0 / 2015-03-03
+==================
+
+  * if target == _blank, don't preventDefault and open window
+
+
 0.7.0 / 2015-03-03
 ==================
 
