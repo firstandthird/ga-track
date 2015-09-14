@@ -9,7 +9,7 @@
 (function($) {
   $.gaTrack = function(category, action, label) {
     if ($.gaTrack.debug) {
-      return console.log('GA TRACK', category, action, label);
+      console.log('GA TRACK', category, action, label);
     }
     if (typeof window._gaq === 'undefined' && typeof window.ga === 'undefined') {
       return this;

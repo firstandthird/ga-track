@@ -131,26 +131,6 @@ suite('ga-track', function() {
 
   });
 
-  test('debug', function(done) {
-    $('#link1')
-      .click();
-
-    var data = window._gaq.data;
-    assert.equal(data.length, 1);
-    window._gaq.clear();
-    assert.equal(window._gaq.data.length, 0);
-    $.gaTrack.debug = true;
-
-    $('#link1')
-      .gaTrack()
-      .click();
-
-    data = window._gaq.data;
-    assert.equal(data.length, 0);
-    $.gaTrack.debug = false;
-    done();
-  });
-
   test('cancel clicks', function(done) {
     $('#link7').click();
 
