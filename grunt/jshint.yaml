@@ -1,3 +1,5 @@
+options:
+  esnext: true
 tools:
   - 'Gruntfile.js'
   - 'bower.json'

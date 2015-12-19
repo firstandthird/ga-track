@@ -2,10 +2,10 @@ options:
   banner: '<%= meta.banner %>'
 lib:
   src:
-    - 'lib/<%= name %>.js'
+    - 'dist/<%= name %>.js'
   dest: 'dist/<%= name %>.bower.js'
 full:
   src:
     - 'dist/_bower.js'
-    - 'lib/<%= name %>.js'
+    - 'dist/<%= name %>.js'
   dest: 'dist/<%= name %>.js'

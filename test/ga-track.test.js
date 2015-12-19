@@ -1,17 +1,19 @@
-/*global assert,test,suite,setup*/
+/* global assert,test,suite,setup,window,$ */
+/* eslint-env mocha */
 
-//ga stub
+// ga stub
 window._gaq = {
   data: null,
-  clear: function() {
+  clear: function clear() {
     this.data = [];
   },
-  push: function(arr) {
+  push: function push(arr) {
     this.data.push(arr);
   }
 };
 
 var gaData = [];
+
 window.ga = function() {
   gaData = arguments;
 };
@@ -39,6 +41,21 @@ suite('ga-track', function() {
       .gaTrack()
     //simulate click
       .click();
+
+    var data = window._gaq.data;
+    assert.equal(data.length, 1);
+    assert.equal(data[0][0], '_trackEvent');
+    assert.equal(data[0][1], 'ga-track');
+    assert.equal(data[0][2], 'Click Me');
+    assert.equal(data[0][3], '#test');
+  });
+
+  test('call jquery plugin on generated element', function() {
+    $('.delegatedElement').gaTrack();
+
+    $('body').append($('<a class="delegatedElement" href="#test">Click Me</a>'));
+
+    $('.delegatedElement').click();
 
     var data = window._gaq.data;
     assert.equal(data.length, 1);
