@@ -1,0 +1,11 @@
+{
+  "extends": "firstandthird",
+  "env": {
+    "node": false,
+    "browser": true
+  },
+  "rules": {
+    "strict": 0,
+    "default-case": 0
+  }
+}

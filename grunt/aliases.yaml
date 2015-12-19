@@ -5,6 +5,7 @@ test:
 lib:
   - jshint:lib
   #- jscs:lib
+  - babel
   - bower
   - concat:lib
   # comment this out if you don't need lib.full.js

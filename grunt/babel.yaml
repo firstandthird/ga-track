@@ -1,0 +1,8 @@
+babel:
+  options:
+    sourceMap: false
+    presets:
+      - 'es2015-no-commonjs'
+  src:
+    - 'lib/<%= name %>.js'
+  dest: 'dist/<%= name %>.js'
