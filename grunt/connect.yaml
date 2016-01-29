@@ -1,4 +1,4 @@
 server:
   options:
     hostname: '*'
-    livereload: true
+    livereload: 35730
