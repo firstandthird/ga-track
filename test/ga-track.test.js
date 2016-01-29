@@ -140,6 +140,19 @@ suite('ga-track', function() {
     }, 600);
   });
 
+  test('$.gaTrack.prefix for categories', function() {
+    $.gaTrack.prefix = 'prefix';
+    $('#link8').click();
+
+    var data = window._gaq.data;
+    assert.equal(data.length, 1);
+    assert.equal(data[0][0], '_trackEvent');
+    assert.equal(data[0][1], 'prefix-category');
+    assert.equal(data[0][2], 'action');
+    assert.equal(data[0][3], 'label');
+    $.gaTrack.prefix = null;
+  });
+
   // These tests need to be last since it removed the window._gaq object
   suite('universal tracking', function() {
     setup(function() {
