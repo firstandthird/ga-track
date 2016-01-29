@@ -1,6 +1,6 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.10.0
+ * v0.10.1
  * https://github.com/firstandthird/ga-track
  * copyright First+Third 2016
  * MIT License
@@ -9,15 +9,15 @@
 /* global window,_gaq,ga */
 (function($) {
   $.gaTrack = function(category, action, label) {
+    if ($.gaTrack.prefix) {
+      category = $.gaTrack.prefix + '-' + category;
+    }
+
     if ($.gaTrack.debug) {
       console.log('GA TRACK', category, action, label);
     }
     if (typeof window._gaq === 'undefined' && typeof window.ga === 'undefined') {
       return this;
-    }
-
-    if ($.gaTrack.prefix) {
-      category = $.gaTrack.prefix + '-' + category;
     }
 
     if(typeof window._gaq !== 'undefined') {
