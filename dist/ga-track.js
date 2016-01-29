@@ -1,8 +1,8 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.8.0
+ * v0.10.0
  * https://github.com/firstandthird/ga-track
- * copyright First+Third 2015
+ * copyright First+Third 2016
  * MIT License
 */
 
@@ -16,6 +16,10 @@
       return this;
     }
 
+    if ($.gaTrack.prefix) {
+      category = $.gaTrack.prefix + '-' + category;
+    }
+
     if(typeof window._gaq !== 'undefined') {
       _gaq.push(['_trackEvent', category, action, label, null, false]);
     } else {
@@ -24,6 +28,7 @@
   };
 
   $.gaTrack.debug = false;
+  $.gaTrack.prefix = null;
 
   $.gaTrackScroll = function() {
     var $body = $('body');
