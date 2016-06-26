@@ -153,6 +153,15 @@ suite('ga-track', function() {
     $.gaTrack.prefix = null;
   });
 
+  test('$.gaTrack.autoTracking() returns list of events being tracked', function() {
+    var tracking = $.gaTrack.autoTracking();
+    assert.equal(tracking.length, 7);
+    assert.equal(tracking[0].action, 'Click Me');
+    assert.equal(tracking[0].category, 'ga-track');
+    assert.equal(tracking[0].label, '#test');
+    assert.equal(typeof tracking[0].el, 'object');
+  });
+
   // These tests need to be last since it removed the window._gaq object
   suite('universal tracking', function() {
     setup(function() {
