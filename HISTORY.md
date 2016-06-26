@@ -1,4 +1,12 @@
 
+0.11.0 / 2016-06-26
+==================
+
+  * removed console.log from test
+  * added test for autoTracking
+  * expose $.gaTrack.autoTracking() to return what is currently being tracked on page
+  * create getDataFromElement function so it can be reused
+
 0.10.1 / 2016-01-29
 ==================
 

@@ -1,6 +1,6 @@
 /*!
  * ga-track - Click tracking for Google Analytics
- * v0.10.1
+ * v0.11.0
  * https://github.com/firstandthird/ga-track
  * copyright First+Third 2016
  * MIT License
@@ -28,6 +28,17 @@
 
   $.gaTrack.debug = false;
   $.gaTrack.prefix = null;
+
+  $.gaTrack.autoTracking = function() {
+    var tracking = [];
+    $('[data-ga-track]').each(function() {
+      var el = $(this);
+      var data = getDataFromElement(el);
+      data.el = el;
+      tracking.push(data);
+    });
+    return tracking;
+  };
 
   $.gaTrackScroll = function() {
     var $body = $('body');
@@ -80,6 +91,23 @@
     $(window).on('scroll', scrollCheck);
   };
 
+  var getDataFromElement = function(el, opt) {
+    if (!opt) {
+      opt = {};
+    }
+    var href = el.data('ga-track-href') || el.attr('href');
+    var cat = el.data('ga-track') || opt.category || 'ga-track';
+    var label = el.data('ga-track-label') || opt.label || href;
+    var action = el.data('ga-track-action') || opt.action || el.text();
+
+    return {
+      href: href,
+      category: cat,
+      label: label,
+      action: action
+    };
+  };
+
   $.fn.gaTrack = function(options) {
     var opt = $.extend({}, $.gaTrack.defaults, options);
 
@@ -87,21 +115,17 @@
 
       var el = $(this);
 
-      var href = el.data('ga-track-href') || el.attr('href');
       var target = el.attr('target');
-
-      var cat = el.data('ga-track') || opt.category || 'ga-track';
-      var label = el.data('ga-track-label') || opt.label || href;
-      var action = el.data('ga-track-action') || opt.action || el.text();
+      var data = getDataFromElement(el, opt);
 
       el.on('click', function(e) {
-        $.gaTrack(cat, action, label);
+        $.gaTrack(data.category, data.action, data.label);
         if (el.data('ga-track-href') === false) {
           e.preventDefault();
-        } else if (href && !e.metaKey && e.which === 1 && target != '_blank') {
+        } else if (data.href && !e.metaKey && e.which === 1 && target != '_blank') {
           e.preventDefault();
           setTimeout(function() {
-            window.location = href;
+            window.location = data.href;
           }, opt.delay);
         }
       });
