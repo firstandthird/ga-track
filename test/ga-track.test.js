@@ -173,7 +173,6 @@ suite('ga-track', function() {
       $('#link6').click();
 
       var data = gaData;
-      console.log(data);
       assert.equal(data.length, 5);
       assert.equal(data[0], 'send');
       assert.equal(data[1], 'event');
