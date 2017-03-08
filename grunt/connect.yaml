@@ -1,4 +1,0 @@
-server:
-  options:
-    hostname: '*'
-    livereload: 35730

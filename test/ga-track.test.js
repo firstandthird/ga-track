@@ -1,184 +1,172 @@
-/*global assert,test,suite,setup*/
+import GATrack from '../index';
+import test from 'tape-rollup';
 
-//ga stub
-window._gaq = {
+// GA Stub
+let gaData = [];
+window._gaq = { // eslint-disable-line no-underscore-dangle
   data: null,
-  clear: function() {
-    this.data = [];
+  clear: assert => {
+    gaData = [];
   },
-  push: function(arr) {
-    this.data.push(arr);
+  push(arr) {
+    gaData.push(arr); // eslint-disable-line no-underscore-dangle
   }
 };
 
-var gaData = [];
-window.ga = function() {
-  gaData = arguments;
+window.ga = function(...args) {
+  gaData = args;
 };
 
-suite('ga-track', function() {
+const init = () => {
+  const container = document.createElement('div');
+  container.id = 'fixture';
+  document.body.appendChild(container);
+};
 
-  setup(function() {
-    window._gaq.clear();
-  });
+const setup = () => {
+  const container = document.getElementById('fixture');
+  container.innerHTML = `
+    <a id="link1" href="#test">Click Me</a>
+    <a id="link1a" href="#test">Click Me</a>
+    <a id="link2" data-ga-track href="#test">Click Me</a>
+    <a id="link3" data-ga-track="category" href="#test">Click Me</a>
+    <a id="link4" data-ga-track data-ga-track-label="label" href="#test">Click Me</a>
+    <a id="link5" data-ga-track data-ga-track-action="action" href="#test">Click Me</a>
+    <a id="link6" data-ga-track data-ga-track-action="action" href="#test">Click Me</a>
+    <a id="link7" data-ga-track data-ga-track-action="action" href="#testclick" data-ga-track-href="false">Click Me</a>
+    <a id="link8" data-ga-track="category" data-ga-track-action="action" data-ga-track-label="label" href="#test7">Click Me</a>
+  `;
 
-  test('ga-track plugin exists', function() {
-    var el = $('#fixture');
-    assert.equal(typeof el.gaTrack, 'function');
-  });
+  GATrack.autotrack();
+  window._gaq.clear(); // eslint-disable-line no-underscore-dangle
+};
 
-  test('returns el', function() {
-    var el = $('#link1').gaTrack();
-    assert.equal(el.length, 1);
-    el.off('click');
-  });
+init();
 
-  test('call jquery plugin', function() {
-    $('#link1')
-    //call plugin
-      .gaTrack()
-    //simulate click
-      .click();
+test('GATrack plugin exists', assert => {
+  assert.equal(typeof GATrack, 'function', 'class is defined');
+  assert.equal(typeof GATrack.sendEvent, 'function', 'sendEvent is defined');
+  assert.equal(typeof GATrack.track, 'function', 'track is defined');
+  assert.equal(typeof GATrack.autotrack, 'function', 'autotrack is defined');
+  assert.end();
+});
 
-    var data = window._gaq.data;
-    assert.equal(data.length, 1);
-    assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'ga-track');
-    assert.equal(data[0][2], 'Click Me');
-    assert.equal(data[0][3], '#test');
-  });
+test('Track an element', assert => {
+  setup();
+  const el = document.getElementById('link1');
+  GATrack.track(el);
+  el.click();
 
-  test('call jquery plugin with options', function() {
-    $('#link1a')
-    //call plugin
-      .gaTrack({ category: 'category', label: 'label', action: 'action' })
-    //simulate click
-      .click();
+  assert.equal(gaData.length, 1, 'one event tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'ga-track', 'category matches');
+  assert.equal(gaData[0][2], 'Click Me', 'action matches');
+  assert.equal(gaData[0][3], '#test', 'label matches');
+  assert.end();
+});
 
-    var data = window._gaq.data;
-    assert.equal(data.length, 1);
-    assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'category');
-    assert.equal(data[0][2], 'action');
-    assert.equal(data[0][3], 'label');
-  });
+test('Does not track twice an element', assert => {
+  setup();
+  const el = document.getElementById('link1');
+  GATrack.track(el);
+  GATrack.track(el);
+  el.click();
 
-  test('data-api with defaults', function(done) {
-    $(function() {
-      $('#link2').click();
-      var data = window._gaq.data;
-      assert.equal(data.length, 1);
-      assert.equal(data[0][0], '_trackEvent');
-      assert.equal(data[0][1], 'ga-track');
-      assert.equal(data[0][2], 'Click Me');
-      assert.equal(data[0][3], '#test');
-      done();
-    });
-
-  });
-
-  test('data-api override category', function() {
-    $('#link3').click();
-
-    var data = window._gaq.data;
-    assert.equal(data.length, 1);
-    assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'category');
-    assert.equal(data[0][2], 'Click Me');
-    assert.equal(data[0][3], '#test');
-  });
-
-  test('data-api override label', function() {
-    $('#link4').click();
-
-    var data = window._gaq.data;
-    assert.equal(data.length, 1);
-    assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'ga-track');
-    assert.equal(data[0][2], 'Click Me');
-    assert.equal(data[0][3], 'label');
-  });
-
-  test('data-api override action', function() {
-    $('#link5').click();
-
-    var data = window._gaq.data;
-    assert.equal(data.length, 1);
-    assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'ga-track');
-    assert.equal(data[0][2], 'action');
-    assert.equal(data[0][3], '#test');
-  });
-
-  test('api exists', function() {
-    assert.equal(typeof $.gaTrack, 'function');
-  });
-
-  test('scroll', function(done) {
-    var timer = 600;
-    $('#fixture').show();
-    $(window).unbind('scroll');
-    $.gaTrackScroll();
-
-    $('html, body').scrollTop(0).animate({scrollTop: 5000}, timer);
+  assert.equal(gaData.length, 1, 'only one event registered');
+  assert.end();
+});
 
 
-    setTimeout(function() {
-      assert.equal(window._gaq.data.length, 5);
-      $('#fixture').hide();
-      done();
-    }, timer);
+test('Track an element with options', assert => {
+  setup();
+  const el = document.getElementById('link1a');
+  GATrack.track(el, { category: 'category', label: 'label', action: 'action' });
+  el.click();
 
-  });
+  assert.equal(gaData.length, 1, 'one event tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'category', 'category matches');
+  assert.equal(gaData[0][2], 'action', 'action matches');
+  assert.equal(gaData[0][3], 'label', 'label matches');
+  assert.end();
+});
 
-  test('cancel clicks', function(done) {
-    $('#link7').click();
+test('Track an element with data and defaults', assert => {
+  setup();
+  const el = document.getElementById('link2');
+  el.click();
 
-    setTimeout(function() {
-      assert.ok(window.location.hash !== '#testclick');
-      done();
-    }, 600);
-  });
+  assert.equal(gaData.length, 1, 'one event tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'ga-track', 'category matches');
+  assert.equal(gaData[0][2], 'Click Me', 'action matches');
+  assert.equal(gaData[0][3], '#test', 'label matches');
+  assert.end();
+});
 
-  test('$.gaTrack.prefix for categories', function() {
-    $.gaTrack.prefix = 'prefix';
-    $('#link8').click();
+test('data-api override category', assert => {
+  setup();
+  const el = document.getElementById('link3');
+  el.click();
 
-    var data = window._gaq.data;
-    assert.equal(data.length, 1);
-    assert.equal(data[0][0], '_trackEvent');
-    assert.equal(data[0][1], 'prefix-category');
-    assert.equal(data[0][2], 'action');
-    assert.equal(data[0][3], 'label');
-    $.gaTrack.prefix = null;
-  });
+  assert.equal(gaData.length, 1, 'one event tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'category', 'category matches');
+  assert.equal(gaData[0][2], 'Click Me', 'action matches');
+  assert.equal(gaData[0][3], '#test', 'label matches');
+  assert.end();
+});
 
-  test('$.gaTrack.autoTracking() returns list of events being tracked', function() {
-    var tracking = $.gaTrack.autoTracking();
-    assert.equal(tracking.length, 7);
-    assert.equal(tracking[0].action, 'Click Me');
-    assert.equal(tracking[0].category, 'ga-track');
-    assert.equal(tracking[0].label, '#test');
-    assert.equal(typeof tracking[0].el, 'object');
-  });
+test('data-api override action', assert => {
+  setup();
+  const el = document.getElementById('link5');
+  el.click();
 
-  // These tests need to be last since it removed the window._gaq object
-  suite('universal tracking', function() {
-    setup(function() {
-      delete window._gaq;
-    });
+  assert.equal(gaData.length, 1, 'one event tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'ga-track', 'category matches');
+  assert.equal(gaData[0][2], 'action', 'action matches');
+  assert.equal(gaData[0][3], '#test', 'label matches');
+  assert.end();
+});
 
-    test('should use universal tracking', function() {
-      var el = $('#link6').gaTrack();
-      $('#link6').click();
+test('data-api override label', assert => {
+  setup();
+  const el = document.getElementById('link4');
+  el.click();
 
-      var data = gaData;
-      assert.equal(data.length, 5);
-      assert.equal(data[0], 'send');
-      assert.equal(data[1], 'event');
-      assert.equal(data[2], 'ga-track');
-      assert.equal(data[3], 'action');
-      assert.equal(data[4], '#test');
-    });
-  });
+  assert.equal(gaData.length, 1, 'one event tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'ga-track', 'category matches');
+  assert.equal(gaData[0][2], 'Click Me', 'action matches');
+  assert.equal(gaData[0][3], 'label', 'label matches');
+  assert.end();
+});
+
+test('cancel clicks', assert => {
+  setup();
+  const el = document.getElementById('link7');
+  el.click();
+
+  setTimeout(() => {
+    assert.notEqual(window.location.hash, '#testclick', 'does not navigate');
+    assert.end();
+  }, 600);
+});
+
+
+test('GATrack.prefix for categories', assert => {
+  GATrack.prefix = 'prefix';
+  setup();
+  const el = document.getElementById('link8');
+  el.click();
+
+  assert.equal(gaData.length, 1, 'one event tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'prefix-category', 'category matches');
+  assert.equal(gaData[0][2], 'action', 'action matches');
+  assert.equal(gaData[0][3], 'label', 'label matches');
+  assert.end();
+
+  GATrack.prefix = null;
 });
