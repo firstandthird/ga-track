@@ -44,7 +44,7 @@ const setup = () => {
 init();
 
 test('GATrack plugin exists', assert => {
-  assert.equal(typeof GATrack, 'function', 'class is defined');
+  assert.equal(typeof GATrack, 'object', 'object is defined');
   assert.equal(typeof GATrack.sendEvent, 'function', 'sendEvent is defined');
   assert.equal(typeof GATrack.track, 'function', 'track is defined');
   assert.equal(typeof GATrack.autotrack, 'function', 'autotrack is defined');

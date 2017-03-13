@@ -3,8 +3,8 @@
 import { on, find } from 'domassist';
 import aug from 'aug';
 
-class GATrack {
-  static sendEvent(category, action, label) {
+const GATrack = {
+  sendEvent(category, action, label) {
     if (GATrack.prefix) {
       category = `${GATrack.prefix}-${category}`;
     }
@@ -20,18 +20,18 @@ class GATrack {
     } else {
       ga('send', 'event', category, action, label);
     }
-  }
+  },
 
-  static getData(element, options = {}) {
+  getData(element, options = {}) {
     const href = element.dataset.gaTrackHref || element.getAttribute('href');
     const category = element.dataset.gaTrack || options.category || 'ga-track';
     const label = element.dataset.gaTrackLabel || options.label || href;
     const action = element.dataset.gaTrackAction || options.action || element.textContent.trim();
 
     return { href, category, label, action };
-  }
+  },
 
-  static track(element, options = {}) {
+  track(element, options = {}) {
     if (typeof element.dataset.gaTrackInitialised !== 'undefined') {
       return;
     }
@@ -43,9 +43,9 @@ class GATrack {
     on(element, 'click', event => {
       GATrack.onTrackedClick(element, event, options);
     });
-  }
+  },
 
-  static onTrackedClick(element, event, options) {
+  onTrackedClick(element, event, options) {
     const data = GATrack.getData(element, options);
     const target = element.getAttribute('target');
 
@@ -57,27 +57,27 @@ class GATrack {
       event.preventDefault();
       setTimeout(() => { window.location = data.href; }, options.delay);
     }
-  }
+  },
 
-  static autotrack() {
+  autotrack() {
     const elements = find('[data-ga-track]');
 
     elements.forEach(element => {
       GATrack.track(element);
     });
-  }
+  },
 
-  static log(...args) {
+  log(...args) {
     if (GATrack.debug) {
       console.log(`[GATRACK] ${args}`); //eslint-disable-line no-console
     }
-  }
-}
+  },
 
-GATrack.debug = false;
-GATrack.prefix = null;
-GATrack.defaults = {
-  delay: 200
+  debug: (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug')),
+  prefix: null,
+  defaults: {
+    delay: 200
+  }
 };
 
 GATrack.debug = (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug'));
