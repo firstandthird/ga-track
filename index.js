@@ -93,6 +93,4 @@ const GATrack = {
 GATrack.debug = (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug'));
 ready(GATrack.autotrack);
 
-window.GATrack = GATrack;
-
 export default GATrack;
