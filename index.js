@@ -32,6 +32,16 @@ const GATrack = {
   },
 
   track(element, options = {}) {
+    if (Array.isArray(element)) {
+      element.forEach(data => {
+        find(data.element).forEach(el => {
+          GATrack.track(el, data);
+        });
+      });
+
+      return;
+    }
+
     if (typeof element.dataset.gaTrackInitialised !== 'undefined') {
       return;
     }
