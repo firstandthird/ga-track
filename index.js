@@ -1,6 +1,6 @@
 /* eslint-env browser */
 /* global _gaq, ga */
-import { on, find } from 'domassist';
+import { on, find, ready } from 'domassist';
 import aug from 'aug';
 
 const GATrack = {
@@ -32,6 +32,16 @@ const GATrack = {
   },
 
   track(element, options = {}) {
+    if (Array.isArray(element)) {
+      element.forEach(data => {
+        find(data.element).forEach(el => {
+          GATrack.track(el, data);
+        });
+      });
+
+      return;
+    }
+
     if (typeof element.dataset.gaTrackInitialised !== 'undefined') {
       return;
     }
@@ -81,6 +91,6 @@ const GATrack = {
 };
 
 GATrack.debug = (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug'));
-GATrack.autotrack();
+ready(GATrack.autotrack);
 
 export default GATrack;
