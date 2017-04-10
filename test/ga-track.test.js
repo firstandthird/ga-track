@@ -26,8 +26,8 @@ const init = () => {
 const setup = () => {
   const container = document.getElementById('fixture');
   container.innerHTML = `
-    <a id="link1" href="#test">Click Me</a>
-    <a id="link1a" href="#test">Click Me</a>
+    <a class="custom" id="link1" href="#test">Click Me</a>
+    <a class="custom" id="link1a" href="#test">Click Me</a>
     <a id="link2" data-ga-track href="#test">Click Me</a>
     <a id="link3" data-ga-track="category" href="#test">Click Me</a>
     <a id="link4" data-ga-track data-ga-track-label="label" href="#test">Click Me</a>
@@ -88,6 +88,26 @@ test('Track an element with options', assert => {
   assert.equal(gaData[0][1], 'category', 'category matches');
   assert.equal(gaData[0][2], 'action', 'action matches');
   assert.equal(gaData[0][3], 'label', 'label matches');
+  assert.end();
+});
+
+test('Track with array of selectors', assert => {
+  setup();
+  const link1 = document.getElementById('link1');
+  const link1a = document.getElementById('link1a');
+  GATrack.track([{ element: '.custom', category: 'category', label: 'label', action: 'action' }]);
+  link1.click();
+  link1a.click();
+
+  assert.equal(gaData.length, 2, 'two events tracked');
+  assert.equal(gaData[0][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[0][1], 'category', 'category matches');
+  assert.equal(gaData[0][2], 'action', 'action matches');
+  assert.equal(gaData[0][3], 'label', 'label matches');
+  assert.equal(gaData[1][0], '_trackEvent', 'tracks event');
+  assert.equal(gaData[1][1], 'category', 'category matches');
+  assert.equal(gaData[1][2], 'action', 'action matches');
+  assert.equal(gaData[1][3], 'label', 'label matches');
   assert.end();
 });
 
