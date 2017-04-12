@@ -79,7 +79,7 @@ const GATrack = {
 
   log(...args) {
     if (GATrack.debug) {
-      console.log(`[GATRACK] ${args}`); //eslint-disable-line no-console
+      console.log('GATRACK', ...args); //eslint-disable-line no-console
     }
   },
 
