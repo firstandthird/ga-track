@@ -50,6 +50,7 @@ const GATrack = {
 
     options = aug({}, GATrack.defaults, options);
 
+    this.log('tracking', element, options);
     on(element, 'click', event => {
       GATrack.onTrackedClick(element, event, options);
     });
