@@ -18,7 +18,7 @@ const GATrack = {
     if (typeof window._gaq !== 'undefined') { // eslint-disable-line no-underscore-dangle
       _gaq.push(['_trackEvent', category, action, label, null, false]);
     } else {
-      ga('send', 'event', category, action, label);
+      ga('send', 'event', category, action, label, { transport: 'beacon' });
     }
   },
 
