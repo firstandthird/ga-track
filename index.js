@@ -1,6 +1,6 @@
 /* eslint-env browser */
 /* global _gaq, ga */
-import { on, find, ready } from 'domassist';
+import { on, find, ready, closest } from 'domassist';
 import aug from 'aug';
 
 const GATrack = {
@@ -46,7 +46,7 @@ const GATrack = {
       return;
     }
 
-    element.dataset.gaTrackInitialised = true;
+    element.dataset.gaTrackInitialised = 'true';
 
     options = aug({}, GATrack.defaults, options);
 
@@ -71,10 +71,23 @@ const GATrack = {
   },
 
   autotrack() {
-    const elements = find('[data-ga-track]');
+    if (GATrack.autotracking === true) {
+      return;
+    }
 
-    elements.forEach(element => {
-      GATrack.track(element);
+    GATrack.autotracking = true;
+    const selector = '[data-ga-track]';
+
+    on(document.body, 'click', e => {
+      let element = e.target;
+
+      if (!element.matches(selector)) {
+        element = closest(element, selector);
+      }
+
+      if (element) {
+        GATrack.onTrackedClick(element, event, GATrack.defaults);
+      }
     });
   },
 
@@ -91,7 +104,22 @@ const GATrack = {
   }
 };
 
-GATrack.debug = (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug'));
-ready(GATrack.autotrack);
+const outlineTracked = () => find('[data-ga-track-initialised], [data-ga-track]').map(el => {
+  el.style.outline = 'red dotted 1px';
+  return el;
+});
+
+GATrack.debug = window.localStorage.getItem('GATrackDebug');
+const outline = window.localStorage.getItem('GATrackOutline');
+
+window.GAOutlineTracked = outlineTracked;
+
+ready(() => {
+  GATrack.autotrack();
+
+  if (outline) {
+    outlineTracked();
+  }
+});
 
 export default GATrack;
