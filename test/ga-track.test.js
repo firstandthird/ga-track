@@ -1,3 +1,11 @@
+/* eslint-disable new-cap */
+if (Element && !Element.prototype.matches) {
+  const proto = Element.prototype;
+  proto.matches = proto.matchesSelector ||
+    proto.mozMatchesSelector || proto.msMatchesSelector ||
+    proto.oMatchesSelector || proto.webkitMatchesSelector;
+}
+
 import GATrack from '../index';
 import test from 'tape-rollup';
 
@@ -48,6 +56,7 @@ test('GATrack plugin exists', assert => {
   assert.equal(typeof GATrack.sendEvent, 'function', 'sendEvent is defined');
   assert.equal(typeof GATrack.track, 'function', 'track is defined');
   assert.equal(typeof GATrack.autotrack, 'function', 'autotrack is defined');
+  assert.equal(typeof window.GAOutlineTracked, 'function', 'outline track is defined');
   assert.end();
 });
 
@@ -189,4 +198,16 @@ test('GATrack.prefix for categories', assert => {
   assert.end();
 
   GATrack.prefix = null;
+});
+
+test('Outline for tracked elements', assert => {
+  setup();
+  const el = document.getElementById('link2');
+
+  assert.equal(el.style.outline, '', 'No outline is set');
+
+  window.GAOutlineTracked();
+
+  assert.equal(el.style.outline, 'red dotted 1px', 'Outline is set');
+  assert.end();
 });
