@@ -4,7 +4,7 @@ import { on, find, ready, closest } from 'domassist';
 import aug from 'aug';
 
 const GATrack = {
-  sendEvent(category, action, label) {
+  sendEvent(category, action, label, callback = null, delay = 1000) {
     if (GATrack.prefix) {
       category = `${GATrack.prefix}-${category}`;
     }
@@ -18,7 +18,16 @@ const GATrack = {
     if (typeof window._gaq !== 'undefined') { // eslint-disable-line no-underscore-dangle
       _gaq.push(['_trackEvent', category, action, label, null, false]);
     } else {
-      ga('send', 'event', category, action, label, { transport: 'beacon' });
+      const options = {
+        transport: 'beacon'
+      };
+
+      if (typeof callback === 'function') {
+        options.hitCallback = callback;
+        setTimeout(callback, delay);
+      }
+
+      ga('send', 'event', category, action, label, options);
     }
   },
 
@@ -59,15 +68,18 @@ const GATrack = {
   onTrackedClick(element, event, options) {
     const data = GATrack.getData(element, options);
     const target = element.getAttribute('target');
-
-    GATrack.sendEvent(data.category, data.action, data.label);
+    let callback = null;
 
     if (element.dataset.gaTrackHref === 'false') {
       event.preventDefault();
     } else if (data.href && !event.metaKey && event.which === 1 && target !== '_blank') {
       event.preventDefault();
-      setTimeout(() => { window.location = data.href; }, options.delay);
+      callback = () => {
+        window.location = data.href;
+      };
     }
+
+    GATrack.sendEvent(data.category, data.action, data.label, callback, options.delay);
   },
 
   autotrack() {
@@ -100,7 +112,7 @@ const GATrack = {
   debug: (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug')),
   prefix: null,
   defaults: {
-    delay: 200
+    delay: 1000
   }
 };
 
