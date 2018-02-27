@@ -4,7 +4,7 @@ import { on, find, ready, closest } from 'domassist';
 import aug from 'aug';
 
 const GATrack = {
-  sendEvent(category, action, label, callback = null, delay = 1000) {
+  sendEvent(category, action, label, callback = null, timeout = 1000) {
     if (GATrack.prefix) {
       category = `${GATrack.prefix}-${category}`;
     }
@@ -24,7 +24,7 @@ const GATrack = {
 
       if (typeof callback === 'function') {
         options.hitCallback = callback;
-        setTimeout(callback, delay);
+        setTimeout(callback, timeout);
       }
 
       ga('send', 'event', category, action, label, options);
@@ -79,7 +79,7 @@ const GATrack = {
       };
     }
 
-    GATrack.sendEvent(data.category, data.action, data.label, callback, options.delay);
+    GATrack.sendEvent(data.category, data.action, data.label, callback, options.timeout);
   },
 
   autotrack() {
@@ -112,7 +112,7 @@ const GATrack = {
   debug: (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug')),
   prefix: null,
   defaults: {
-    delay: 1000
+    timeout: 1000
   }
 };
 
