@@ -3,6 +3,11 @@
 import { on, find, ready, closest } from 'domassist';
 import aug from 'aug';
 
+// IE Polyfill-ish
+if (!Element.prototype.matches) {
+  Element.prototype.matches = Element.prototype.msMatchesSelector;
+}
+
 const GATrack = {
   sendEvent(category, action, label, callback = null, timeout = 1000) {
     if (GATrack.prefix) {
