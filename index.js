@@ -95,8 +95,8 @@ const GATrack = {
     GATrack.autotracking = true;
     const selector = '[data-ga-track]';
 
-    on(document.body, 'click', e => {
-      let element = e.target;
+    on(document.body, 'click', event => {
+      let element = event.target;
 
       if (!element.matches(selector)) {
         element = closest(element, selector);
