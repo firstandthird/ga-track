@@ -28,8 +28,20 @@ const GATrack = {
       };
 
       if (typeof callback === 'function') {
-        options.hitCallback = callback;
-        setTimeout(callback, timeout);
+        let timeoutId;
+
+        const onHit = () => {
+          if (!timeoutId) {
+            return;
+          }
+
+          clearTimeout(timeoutId);
+          timeoutId = null;
+          callback();
+        };
+
+        timeoutId = setTimeout(onHit, timeout);
+        options.hitCallback = onHit;
       }
 
       ga('send', 'event', category, action, label, options);
