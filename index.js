@@ -48,6 +48,17 @@ const GATrack = {
     }
   },
 
+  send() {
+    if (typeof window.ga === 'undefined') { // eslint-disable-line no-underscore-dangle
+      return GATrack;
+    }
+
+    // eslint-disable-next-line prefer-rest-params
+    const args = Array.prototype.slice.call(arguments);
+    args.unshift('send');
+    ga.apply(null, args);
+  },
+
   getData(element, options = {}) {
     const href = element.dataset.gaTrackHref || element.getAttribute('href');
     const category = element.dataset.gaTrack || options.category || 'ga-track';

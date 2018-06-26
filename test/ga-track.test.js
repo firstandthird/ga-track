@@ -211,3 +211,15 @@ test('Outline for tracked elements', assert => {
   assert.equal(el.style.outline, 'red dotted 1px', 'Outline is set');
   assert.end();
 });
+
+test('Can send arbitrary events to GA', assert => {
+  setup();
+
+  GATrack.send('some', 'random', 'stuff');
+  assert.equal(gaData[0], 'send', 'first parameter is send');
+  assert.equal(gaData[1], 'some', 'second parameter is correct');
+  assert.equal(gaData[2], 'random', 'third parameter is correct');
+  assert.equal(gaData[3], 'stuff', 'fourth parameter is correct');
+
+  assert.end();
+});
