@@ -223,3 +223,29 @@ test('Can send arbitrary events to GA', assert => {
 
   assert.end();
 });
+
+test('Can use GTag too', assert => {
+  setup();
+
+  const ga = window.ga;
+  // eslint-disable-next-line no-underscore-dangle
+  const _gaq = window._gaq;
+
+  window.ga = undefined;
+  // eslint-disable-next-line no-underscore-dangle
+  window._gaq = undefined;
+
+  window.gtag = function(...args) {
+    assert.equal(args[0], 'event', 'first parameter is event');
+    assert.equal(args[1], 'action', 'second parameter is correct');
+    assert.deepEqual(args[2], { event_category: 'category', event_label: 'label' }, 'third parameter is correct');
+    assert.end();
+  };
+
+  GATrack.sendEvent('category', 'action', 'label');
+
+  window.gtag = undefined;
+  window.ga = ga;
+  // eslint-disable-next-line no-underscore-dangle
+  window._gaq = _gaq;
+});
