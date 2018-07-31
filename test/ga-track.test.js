@@ -17,7 +17,9 @@ window._gaq = { // eslint-disable-line no-underscore-dangle
     gaData = [];
   },
   push(arr) {
-    gaData.push(arr); // eslint-disable-line no-underscore-dangle
+    if (Array.isArray(arr)) {
+      gaData.push(arr); // eslint-disable-line no-underscore-dangle
+    }
   }
 };
 
@@ -238,7 +240,8 @@ test('Can use GTag too', assert => {
   window.gtag = function(...args) {
     assert.equal(args[0], 'event', 'first parameter is event');
     assert.equal(args[1], 'action', 'second parameter is correct');
-    assert.deepEqual(args[2], { event_category: 'category', event_label: 'label' }, 'third parameter is correct');
+    assert.equal(args[2].event_category, 'category', 'third parameter is correct');
+    assert.equal(args[2].event_label, 'label', 'third parameter is correct');
     assert.end();
   };
 
