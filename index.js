@@ -1,5 +1,6 @@
+/* eslint-disable callback-return */
 /* eslint-env browser */
-/* global _gaq, ga */
+/* global _gaq, ga, gtag */
 import { on, find, ready, closest } from 'domassist';
 import aug from 'aug';
 
@@ -13,38 +14,53 @@ const GATrack = {
     if (GATrack.prefix) {
       category = `${GATrack.prefix}-${category}`;
     }
-
+    let onHit = () => {};
     GATrack.log(category, action, label);
 
-    if (typeof window._gaq === 'undefined' && typeof window.ga === 'undefined') { // eslint-disable-line no-underscore-dangle
+    if (typeof window._gaq === 'undefined' && // eslint-disable-line no-underscore-dangle
+      typeof window.ga === 'undefined' &&
+      typeof window.gtag === 'undefined') {
+      if (typeof callback === 'function') {
+        callback();
+      }
+
       return GATrack;
+    }
+
+    if (typeof callback === 'function') {
+      let timeoutId;
+
+      onHit = () => {
+        if (!timeoutId) {
+          return;
+        }
+
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        callback();
+      };
+
+      timeoutId = setTimeout(onHit, timeout);
     }
 
     if (typeof window._gaq !== 'undefined') { // eslint-disable-line no-underscore-dangle
       _gaq.push(['_trackEvent', category, action, label, null, false]);
-    } else {
+      _gaq.push(onHit);
+    } else if (typeof window.ga !== 'undefined') {
       const options = {
-        transport: 'beacon'
+        transport: 'beacon',
+        hitCallback: onHit
       };
 
-      if (typeof callback === 'function') {
-        let timeoutId;
-
-        const onHit = () => {
-          if (!timeoutId) {
-            return;
-          }
-
-          clearTimeout(timeoutId);
-          timeoutId = null;
-          callback();
-        };
-
-        timeoutId = setTimeout(onHit, timeout);
-        options.hitCallback = onHit;
-      }
-
       ga('send', 'event', category, action, label, options);
+    } else if (typeof window.gtag !== 'undefined') {
+      const payload = {
+        event_category: category,
+        event_label: label,
+        event_callback: onHit
+      };
+
+      gtag('event', action, payload);
     }
   },
 

@@ -17,7 +17,9 @@ window._gaq = { // eslint-disable-line no-underscore-dangle
     gaData = [];
   },
   push(arr) {
-    gaData.push(arr); // eslint-disable-line no-underscore-dangle
+    if (Array.isArray(arr)) {
+      gaData.push(arr); // eslint-disable-line no-underscore-dangle
+    }
   }
 };
 
@@ -222,4 +224,31 @@ test('Can send arbitrary events to GA', assert => {
   assert.equal(gaData[3], 'stuff', 'fourth parameter is correct');
 
   assert.end();
+});
+
+test('Can use GTag too', assert => {
+  setup();
+
+  const ga = window.ga;
+  // eslint-disable-next-line no-underscore-dangle
+  const _gaq = window._gaq;
+
+  window.ga = undefined;
+  // eslint-disable-next-line no-underscore-dangle
+  window._gaq = undefined;
+
+  window.gtag = function(...args) {
+    assert.equal(args[0], 'event', 'first parameter is event');
+    assert.equal(args[1], 'action', 'second parameter is correct');
+    assert.equal(args[2].event_category, 'category', 'third parameter is correct');
+    assert.equal(args[2].event_label, 'label', 'third parameter is correct');
+    assert.end();
+  };
+
+  GATrack.sendEvent('category', 'action', 'label');
+
+  window.gtag = undefined;
+  window.ga = ga;
+  // eslint-disable-next-line no-underscore-dangle
+  window._gaq = _gaq;
 });
