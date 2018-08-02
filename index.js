@@ -46,14 +46,8 @@ const GATrack = {
     if (typeof window._gaq !== 'undefined') { // eslint-disable-line no-underscore-dangle
       _gaq.push(['_trackEvent', category, action, label, null, false]);
       _gaq.push(onHit);
-    } else if (typeof window.ga !== 'undefined') {
-      const options = {
-        transport: 'beacon',
-        hitCallback: onHit
-      };
-
-      ga('send', 'event', category, action, label, options);
     } else if (typeof window.gtag !== 'undefined') {
+      // Gtag check needs to go before since gtag creates a ga variable
       const payload = {
         event_category: category,
         event_label: label,
@@ -61,6 +55,13 @@ const GATrack = {
       };
 
       gtag('event', action, payload);
+    } else if (typeof window.ga !== 'undefined') {
+      const options = {
+        transport: 'beacon',
+        hitCallback: onHit
+      };
+
+      ga('send', 'event', category, action, label, options);
     }
   },
 
