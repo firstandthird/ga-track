@@ -1,13 +1,8 @@
 /* eslint-disable callback-return */
 /* eslint-env browser */
 /* global _gaq, ga, gtag */
-import { on, find, ready, closest } from 'domassist';
+import { on, find, ready, closest, matches } from 'domassist';
 import aug from 'aug';
-
-// IE Polyfill-ish
-if (!Element.prototype.matches) {
-  Element.prototype.matches = Element.prototype.msMatchesSelector;
-}
 
 const GATrack = {
   sendEvent(category, action, label, callback = null, timeout = 1000) {
@@ -138,7 +133,7 @@ const GATrack = {
     on(document.body, 'click', event => {
       let element = event.target;
 
-      if (!element.matches(selector)) {
+      if (!matches(element, selector)) {
         element = closest(element, selector);
       }
 
