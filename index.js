@@ -61,13 +61,20 @@ const GATrack = {
   },
 
   send() {
+    // eslint-disable-next-line prefer-rest-params
+    const args = Array.prototype.slice.call(arguments);
+    args.unshift('send');
+    GATrack.set.apply(null, args);
+  },
+
+  set() {
     if (typeof window.ga === 'undefined') { // eslint-disable-line no-underscore-dangle
       return GATrack;
     }
 
     // eslint-disable-next-line prefer-rest-params
     const args = Array.prototype.slice.call(arguments);
-    args.unshift('send');
+
     ga.apply(null, args);
   },
 

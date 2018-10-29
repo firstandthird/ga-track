@@ -226,6 +226,17 @@ test('Can send arbitrary events to GA', assert => {
   assert.end();
 });
 
+test('Can send arbitrary data to GA', assert => {
+  setup();
+
+  GATrack.set('some', 'random', 'stuff');
+  assert.equal(gaData[0], 'some', 'first parameter is correct');
+  assert.equal(gaData[1], 'random', 'second parameter is correct');
+  assert.equal(gaData[2], 'stuff', 'third parameter is correct');
+
+  assert.end();
+});
+
 test('Can use GTag too', assert => {
   setup();
 
