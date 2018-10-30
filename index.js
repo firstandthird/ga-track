@@ -47,14 +47,14 @@ const GATrack = {
         event_callback: onHit
       };
 
-      gtag('event', action, payload);
+      GATrack.sendData('event', action, payload);
     } else if (GATrack.isGA) {
       const options = {
         transport: 'beacon',
         hitCallback: onHit
       };
 
-      ga('send', 'event', category, action, label, options);
+      GATrack.sendData('send', 'event', category, action, label, options);
     }
   },
 
