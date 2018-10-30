@@ -229,7 +229,7 @@ test('Can send arbitrary events to GA', assert => {
 test('Can send arbitrary data to GA', assert => {
   setup();
 
-  GATrack.set('some', 'random', 'stuff');
+  GATrack.sendData('some', 'random', 'stuff');
   assert.equal(gaData[0], 'some', 'first parameter is correct');
   assert.equal(gaData[1], 'random', 'second parameter is correct');
   assert.equal(gaData[2], 'stuff', 'third parameter is correct');

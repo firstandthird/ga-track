@@ -12,9 +12,7 @@ const GATrack = {
     let onHit = () => {};
     GATrack.log(category, action, label);
 
-    if (typeof window._gaq === 'undefined' && // eslint-disable-line no-underscore-dangle
-      typeof window.ga === 'undefined' &&
-      typeof window.gtag === 'undefined') {
+    if (!GATrack.isEnabled) {
       if (typeof callback === 'function') {
         callback();
       }
@@ -38,10 +36,10 @@ const GATrack = {
       timeoutId = setTimeout(onHit, timeout);
     }
 
-    if (typeof window._gaq !== 'undefined') { // eslint-disable-line no-underscore-dangle
+    if (GATrack.isGAQ) {
       _gaq.push(['_trackEvent', category, action, label, null, false]);
       _gaq.push(onHit);
-    } else if (typeof window.gtag !== 'undefined') {
+    } else if (GATrack.isGTag) {
       // Gtag check needs to go before since gtag creates a ga variable
       const payload = {
         event_category: category,
@@ -50,7 +48,7 @@ const GATrack = {
       };
 
       gtag('event', action, payload);
-    } else if (typeof window.ga !== 'undefined') {
+    } else if (GATrack.isGA) {
       const options = {
         transport: 'beacon',
         hitCallback: onHit
@@ -63,19 +61,27 @@ const GATrack = {
   send() {
     // eslint-disable-next-line prefer-rest-params
     const args = Array.prototype.slice.call(arguments);
-    args.unshift('send');
-    GATrack.set.apply(null, args);
+
+    if (GATrack.isGA) {
+      args.unshift('send');
+    }
+
+    GATrack.sendData.apply(null, args);
   },
 
-  set() {
-    if (typeof window.ga === 'undefined') { // eslint-disable-line no-underscore-dangle
+  sendData() {
+    if (!GATrack.isEnabled) {
       return GATrack;
     }
 
     // eslint-disable-next-line prefer-rest-params
     const args = Array.prototype.slice.call(arguments);
 
-    ga.apply(null, args);
+    if (GATrack.isGA) {
+      ga.apply(null, args);
+    } else if (GATrack.isGTag) {
+      gtag.apply(null, args);
+    }
   },
 
   getData(element, options = {}) {
@@ -154,6 +160,23 @@ const GATrack = {
     if (GATrack.debug) {
       console.log('GATRACK', ...args); //eslint-disable-line no-console
     }
+  },
+
+  get isGAQ() {
+    // eslint-disable-line no-underscore-dangle
+    return (typeof window._gaq !== 'undefined');
+  },
+
+  get isGTag() {
+    return (typeof window.gtag !== 'undefined');
+  },
+
+  get isGA() {
+    return (typeof window.ga !== 'undefined');
+  },
+
+  get isEnabled() {
+    return GATrack.isGA || GATrack.isGTag || GATrack.isGAQ;
   },
 
   debug: (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug')),
