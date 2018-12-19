@@ -263,3 +263,31 @@ test('Can use GTag too', assert => {
   // eslint-disable-next-line no-underscore-dangle
   window._gaq = _gaq;
 });
+
+test('Can force an option', assert => {
+  setup();
+  assert.plan(3);
+
+  const ga = window.ga;
+  // eslint-disable-next-line no-underscore-dangle
+  const _gaq = window._gaq;
+
+  // eslint-disable-next-line no-underscore-dangle
+  window._gaq = undefined;
+
+  window.gtag = () => {
+    assert.fail('Should not be used');
+  };
+
+  GATrack.force = 'ga';
+  GATrack.sendEvent('category', 'action', 'label');
+  assert.equal(gaData[2], 'category', 'first parameter is correct');
+  assert.equal(gaData[3], 'action', 'second parameter is correct');
+  assert.equal(gaData[4], 'label', 'third parameter is correct');
+
+  window.gtag = undefined;
+  window.ga = ga;
+  // eslint-disable-next-line no-underscore-dangle
+  window._gaq = _gaq;
+  GATrack.force = null;
+});

@@ -162,17 +162,21 @@ const GATrack = {
     }
   },
 
+  isNullOrEnforced(provider) {
+    return GATrack.force === null || GATrack.force === provider;
+  },
+
   get isGAQ() {
     // eslint-disable-line no-underscore-dangle
-    return (typeof window._gaq !== 'undefined');
+    return (typeof window._gaq !== 'undefined') && GATrack.isNullOrEnforced('gaq');
   },
 
   get isGTag() {
-    return (typeof window.gtag !== 'undefined');
+    return (typeof window.gtag !== 'undefined') && GATrack.isNullOrEnforced('gtag');
   },
 
   get isGA() {
-    return (typeof window.ga !== 'undefined');
+    return (typeof window.ga !== 'undefined') && GATrack.isNullOrEnforced('ga');
   },
 
   get isEnabled() {
@@ -181,6 +185,7 @@ const GATrack = {
 
   debug: (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug')),
   prefix: null,
+  force: null,
   defaults: {
     timeout: 1000
   }
