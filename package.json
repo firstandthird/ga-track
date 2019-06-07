@@ -29,12 +29,12 @@
   "homepage": "https://github.com/firstandthird/ga-track#readme",
   "devDependencies": {
     "eslint-config-firstandthird": "^4.3.0",
-    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-import": "^2.17.3",
     "phantomjs-prebuilt": "^2.1.16",
-    "scriptkit": "^2.0.1",
+    "scriptkit": "^2.0.3",
     "tap-spec": "^5.0.0",
     "tape-rollup": "^4.6.4",
-    "tape-run": "^5.0.0"
+    "tape-run": "^6.0.0"
   },
   "eslintConfig": {
     "env": {
@@ -60,6 +60,6 @@
   },
   "dependencies": {
     "aug": "^3.0.1",
-    "domassist": "^2.0.2"
+    "domassist": "^2.0.3"
   }
 }
