@@ -196,8 +196,8 @@ const outlineTracked = () => find('[data-ga-track-initialised], [data-ga-track]'
   return el;
 });
 
-GATrack.debug = window.localStorage.getItem('GATrackDebug');
-const outline = window.localStorage.getItem('GATrackOutline');
+GATrack.debug = typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug');
+const outline = typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackOutline');
 
 window.GAOutlineTracked = outlineTracked;
 
