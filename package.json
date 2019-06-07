@@ -47,6 +47,9 @@
       "dist/ga-track.js": "index.js",
       "test/ga-track.test.dist.js": "test/ga-track.test.js"
     },
+    "serve": {
+      "enabled": true
+    },
     "scripts": {
       "babel": {
         "exclude": [
