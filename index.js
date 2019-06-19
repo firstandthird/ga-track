@@ -202,10 +202,14 @@ const outline = window.localStorage.getItem('GATrackOutline');
 window.GAOutlineTracked = outlineTracked;
 
 ready(() => {
-  GATrack.autotrack();
+  if (!window._GATrack_) {
+    window._GATrack_ = GATrack;
 
-  if (outline) {
-    outlineTracked();
+    GATrack.autotrack();
+
+    if (outline) {
+      outlineTracked();
+    }
   }
 });
 
