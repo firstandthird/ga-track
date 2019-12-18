@@ -1,6 +1,6 @@
 {
   "name": "ga-track",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "Google Analytics Tracking helper",
   "main": "index.js",
   "module": "dist/ga-track.js",
