@@ -78,6 +78,10 @@ const GATrack = {
     const args = Array.prototype.slice.call(arguments);
 
     if (GATrack.isGA) {
+      if (GATrack.trackerName) {
+        args[0] = `${GATrack.trackerName}.${args[0]}`;
+      }
+
       ga.apply(null, args);
     } else if (GATrack.isGTag) {
       gtag.apply(null, args);
@@ -185,6 +189,7 @@ const GATrack = {
 
   debug: (typeof window.localStorage === 'object' && window.localStorage.getItem('GATrackDebug')),
   prefix: null,
+  trackerName: '',
   force: null,
   defaults: {
     timeout: 1000
@@ -204,6 +209,10 @@ window.GAOutlineTracked = outlineTracked;
 ready(() => {
   if (!window._GATrack_) {
     window._GATrack_ = GATrack;
+
+    if (typeof window.gaTrackerName_ !== 'undefined') {
+      GATrack.trackerName = window.gaTrackerName_;
+    }
 
     GATrack.autotrack();
 
