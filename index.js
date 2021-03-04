@@ -77,14 +77,14 @@ const GATrack = {
     // eslint-disable-next-line prefer-rest-params
     const args = Array.prototype.slice.call(arguments);
 
-    if (GATrack.isGA) {
+    if (GATrack.isGTag) {
+      gtag.apply(null, args);
+    } else if (GATrack.isGA) {
       if (GATrack.trackerName) {
         args[0] = `${GATrack.trackerName}.${args[0]}`;
       }
 
       ga.apply(null, args);
-    } else if (GATrack.isGTag) {
-      gtag.apply(null, args);
     }
   },
 
