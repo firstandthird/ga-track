@@ -43,6 +43,7 @@ class GATrack {
   }
 
   static send(...args) {
+    console.log(args);
     if (this.isGA()) {
       args.unshift('send');
     }
