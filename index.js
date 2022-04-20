@@ -15,6 +15,7 @@ class GATrack {
       this.log(category, action, label);
 
       if (!this.isEnabled()) {
+        this.log('sendEvent', 'ga-track disabled');
         return resolve();
       }
 
@@ -51,6 +52,7 @@ class GATrack {
 
   static sendData(...args) {
     if (!this.isEnabled()) {
+      this.log('sendData', 'ga-track disabled');
       return;
     }
 
