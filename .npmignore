@@ -6,5 +6,3 @@ test/*
 .DS_Store
 .git
 .editorconfig
-.node-version
-.travis.yml
