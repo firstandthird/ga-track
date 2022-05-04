@@ -31,13 +31,14 @@ import GATrack from 'ga-track';
 
 ## Methods
 
-### sendEvent(category, action, label)
+### sendEvent(name, event_params)
 
 Manually sends an event to Google Analytics. Returns a promise.
 
 #### Parameters:
+`name` - {string}
 
-`category` - {string} - Event's category.
+`event_params` - {Array of strings} - custom or [recommend](https://support.google.com/analytics/answer/9267735) event params ([25 max](https://support.google.com/analytics/answer/9267744?hl=en)).
 
 `action` - {string} - Event's action.
 
