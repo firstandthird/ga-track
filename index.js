@@ -25,7 +25,7 @@ class GATrack {
         this.sendData(payload);
       })
     }
-    null;
+    return;
   }
 
 
