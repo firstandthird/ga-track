@@ -5,6 +5,24 @@ class GATrack {
   static debug = false;
   static trackerName = '';
   static force = null;
+  static g4 = false;
+
+  static async sendEventG4(event_name, event_params) {
+    if(GATrack.isGTag && GATrack.g4) {
+      const events = event_params.map(element => ({
+        [element]: element,
+      }));
+      const payload = {
+        events:[{
+          name: event_name,
+          params: events
+        }],
+      }
+      GATrack.sendData(event_name, action, payload);
+    }
+  }
+
+  
 
   static async sendEvent(category, action, label) {
     if (this.prefix) {
