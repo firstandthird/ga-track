@@ -8,6 +8,10 @@ class GATrack {
   static V4 = false;
 
   static async sendEventV4(event_name, event_params) {
+    if (event_params.length > 25) {
+      console.error("can't send more than 25 event params")
+      return;
+    }
     if(GATrack.isGTag && GATrack.V4) {
       const payload = {
         events:[{
