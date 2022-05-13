@@ -31,7 +31,7 @@ import GATrack from 'ga-track';
 
 ## Methods
 
-### sendEvent()
+### sendEvent(action, label)
 
 Manually sends an event to Google Analytics. Returns a promise.
 
@@ -42,7 +42,7 @@ Manually sends an event to Google Analytics. Returns a promise.
 
 `label` - {string} - Event's label.
 
-### sendEventV4()
+### sendEventV4(name, event_params)
 
 `name` - {string}
 
