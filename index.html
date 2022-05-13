@@ -2,10 +2,6 @@
 <html>
   <head>
     <title></title>
-    <script src="index.js">
-      GaTrack.V4 = true;
-      const test = () => GaTrack.sendEventV4('test', [{test_param_1: 'test value 1'}, {test_param_2: 'test value 2'}]) 
-    </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
 <script>
@@ -18,5 +14,9 @@
   </head>
   <body>
     <button onclick="test()">Click me to run test</button>
+    <script src="index.js">
+      GaTrack.V4 = true;
+      const test = () => GaTrack.sendEventV4('test', [{test_param_1: 'test value 1'}, {test_param_2: 'test value 2'}]) 
+    </script>
   </body>
 </html>

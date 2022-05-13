@@ -52,7 +52,7 @@ V4
 GaTrack.G4 = true;
 ```
 ```javascript
-GATrack.sendData('read_article',[{name: 'author', value: 'David Mitchell'}, {name: 'title', value: 'Cloud Atlas'}]);
+GATrack.sendEventV4('read_article',[{name: 'author', value: 'David Mitchell'}, {name: 'title', value: 'Cloud Atlas'}]);
 ```
 
 ### sendData()
