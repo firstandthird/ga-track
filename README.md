@@ -31,18 +31,29 @@ import GATrack from 'ga-track';
 
 ## Methods
 
-### sendEvent(name, event_params)
+### sendEvent()
 
 Manually sends an event to Google Analytics. Returns a promise.
 
 #### Parameters:
-`name` - {string}
 
-`event_params` - {Array of strings} - custom or [recommend](https://support.google.com/analytics/answer/9267735) event params ([25 max](https://support.google.com/analytics/answer/9267744?hl=en)).
 
 `action` - {string} - Event's action.
 
 `label` - {string} - Event's label.
+
+### sendEventV4()
+
+`name` - {string}
+
+`event_params` - {Array of strings} - custom or [recommend](https://support.google.com/analytics/answer/9267735) event params ([25 max](https://support.google.com/analytics/answer/9267744?hl=en)).
+V4
+```javascript
+GaTrack.G4 = true;
+```
+```javascript
+GATrack.sendData('read_article',[{name: 'author', value: 'David Mitchell'}, {name: 'title', value: 'Cloud Atlas'}]);
+```
 
 ### sendData()
 
@@ -53,6 +64,14 @@ GATrack.sendData('set', 'dimension2', 'member');
 ```
 
 ## Options
+
+### V4
+```js
+import GATrack from 'ga-track';
+
+GATrack.V4 = true;
+```
+Allows you to use the [V4](#sendeventv4) version of sendEvent()
 
 ### Debug Mode
 

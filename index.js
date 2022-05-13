@@ -5,24 +5,30 @@ class GATrack {
   static debug = false;
   static trackerName = '';
   static force = null;
-  static g4 = false;
+  static V4 = false;
 
-  static async sendEventG4(event_name, event_params) {
-    if(GATrack.isGTag && GATrack.g4) {
-      const events = event_params.map(element => ({
-        [element]: element,
-      }));
+  static async sendEventV4(event_name, event_params) {
+    if(GATrack.isGTag && GATrack.V4) {
       const payload = {
         events:[{
           name: event_name,
-          params: events
+          params: event_params
         }],
       }
-      GATrack.sendData(event_name, action, payload);
+
+      return new Promise(resolve => {
+        this.log(event_name, events)
+        if (!this.isEnabled()) {
+          this.log('sendEventV4', 'ga-track disabled');
+          return resolve();
+        }
+        this.sendData(payload);
+      })
     }
+    null;
   }
 
-  
+
 
   static async sendEvent(category, action, label) {
     if (this.prefix) {
