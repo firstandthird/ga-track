@@ -8,6 +8,11 @@ class GATrack {
   static V4 = false;
 
   static async sendEventV4(event_name, event_params) {
+    if (GATrack.V4 === false) {
+      console.error('to use sendEventV4 change GATrack.V4 to true')
+      return;
+    }
+
     if(event_name === '' || event_name === null) {
       console.error("event name is required");
       return;
