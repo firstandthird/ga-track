@@ -8,6 +8,11 @@ class GATrack {
   static V4 = false;
 
   static async sendEventV4(event_name, event_params) {
+    if(event_name === '' || event_name === null) {
+      console.error("event name is required");
+      return;
+    }
+
     if (event_params.length > 25) {
       console.error("can't send more than 25 event params")
       return;
