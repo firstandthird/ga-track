@@ -13,6 +13,11 @@ class GATrack {
       return;
     }
 
+    if (typeof event_name !== 'string') {
+      console.error("event_name has to be of type string");
+      return;
+    }
+
     if(event_name === '' || event_name === null) {
       console.error("event name is required");
       return;
