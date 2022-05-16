@@ -36,7 +36,7 @@ class GATrack {
       }
 
       return new Promise(resolve => {
-        this.log(event_name, events)
+        this.log(event_name, event_params)
         if (!this.isEnabled()) {
           this.log('sendEventV4', 'ga-track disabled');
           return resolve();
