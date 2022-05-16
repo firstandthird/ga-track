@@ -47,8 +47,6 @@ class GATrack {
     return;
   }
 
-
-
   static async sendEvent(category, action, label) {
     if (this.prefix) {
       category = `${this.prefix}-${category}`;
@@ -101,7 +99,7 @@ class GATrack {
     }
 
     if (this.isGTag()) {
-      window.gtag.apply(null, args);
+      console.log(window.gtag.apply(null, args));
     } else if (this.isGA()) {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
