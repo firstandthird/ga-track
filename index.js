@@ -102,12 +102,13 @@ class GATrack {
     }
 
     if (this.isGTag()) {
-      console.log(window.gtag.apply(null, args));
+      window.gtag.apply(null, args);
+      return;
     } else if (this.isGA()) {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
       }
-
+      console.log(window.ga.apply(null, args));
       window.ga.apply(null, args);
     }
   }
