@@ -30,7 +30,6 @@ class GATrack {
 
 
     if(GATrack.isGTag() && GATrack.V4) {
-      this.log(this.isEnabled());
       const payload = {
         events:[{
           name: event_name,
@@ -39,7 +38,8 @@ class GATrack {
       }
 
       return new Promise(resolve => {
-        this.log(payload)
+        this.log(payload);
+        this.log(this.isEnabled());
         if (!this.isEnabled()) {
           this.log('sendEventV4', 'ga-track disabled');
           return resolve();
