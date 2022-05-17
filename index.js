@@ -7,7 +7,7 @@ class GATrack {
   static force = null;
   static V4 = false;
 
-  static async sendEventV4(event_name, event_params) {
+  static async sendEventV4(client_id, event_name, event_params) {
     if (GATrack.V4 === false) {
       console.error('to use sendEventV4 change GATrack.V4 to true')
       return;
@@ -31,6 +31,7 @@ class GATrack {
 
     if(GATrack.isGTag() && GATrack.V4) {
       const payload = {
+        client_id: client_id,
         events:[{
           name: event_name,
           params: event_params
