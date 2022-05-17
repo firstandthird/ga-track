@@ -28,9 +28,9 @@ class GATrack {
       return;
     }
 
-    this.log(this.isEnabled());
 
     if(GATrack.isGTag() && GATrack.V4) {
+      this.log(this.isEnabled());
       const payload = {
         events:[{
           name: event_name,
