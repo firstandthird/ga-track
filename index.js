@@ -28,7 +28,7 @@ class GATrack {
       return;
     }
 
-    console.log(this.isEnabled());
+    this.log(this.isEnabled());
 
     if(GATrack.isGTag() && GATrack.V4) {
       const payload = {
