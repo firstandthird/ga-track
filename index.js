@@ -27,7 +27,20 @@ class GATrack {
       console.error("can't send more than 25 event params")
       return;
     }
-    if(GATrack.isGTag && GATrack.V4) {
+
+    if (GATrack.isGA()) {
+      console.error("I'm GA")
+    }
+
+    if (GATrack.isGAQ()) {
+      console.error("I'm GAQ")
+    }
+
+    if (GATrack.isGTag()) {
+      console.error("I'm GTag")
+    }
+
+    if(GATrack.isGTag() && GATrack.V4) {
       const payload = {
         events:[{
           name: event_name,
