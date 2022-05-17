@@ -28,17 +28,7 @@ class GATrack {
       return;
     }
 
-    if (GATrack.isGA()) {
-      console.error("I'm GA")
-    }
-
-    if (GATrack.isGAQ()) {
-      console.error("I'm GAQ")
-    }
-
-    if (GATrack.isGTag()) {
-      console.error("I'm GTag")
-    }
+    console.log(this.isEnabled());
 
     if(GATrack.isGTag() && GATrack.V4) {
       const payload = {
@@ -49,7 +39,7 @@ class GATrack {
       }
 
       return new Promise(resolve => {
-        this.log(event_name, event_params)
+        this.log(payload)
         if (!this.isEnabled()) {
           this.log('sendEventV4', 'ga-track disabled');
           return resolve();
