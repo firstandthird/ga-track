@@ -7,7 +7,7 @@ class GATrack {
   static force = null;
   static V4 = false;
 
-  static async sendEventV4(client_id, event_name, event_params) {
+  static async sendEventV4(api_secret, measurement_id, client_id, event_name, event_params) {
 
     if (typeof event_name !== 'string') {
       console.error("event_name has to be of type string");
@@ -26,12 +26,18 @@ class GATrack {
 
 
     if(GATrack.isGTag() && GATrack.V4) {
-      const payload = {
-        client_id: client_id,
-        events:[{
-          name: event_name,
-          params: event_params
-        }],
+      const request = {
+        body: {
+          api_secret: api_secret,
+          measurement_id: measurement_id,
+        },
+        payload: {
+          client_id: client_id,
+          events:[{
+            name: event_name,
+            params: event_params
+          }],
+        }
       }
 
       return new Promise(resolve => {
@@ -105,7 +111,15 @@ class GATrack {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
       }
-      console.log(window.ga.apply(null, args));
+      if (GATrack.V4) {
+        console.log(args[0])
+        console.log(args)
+        fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${args[0].measurement_id}&api_secret=${args[0].api_secret}`, {
+          method: "POST",
+          body: JSON.stringify({"client_id":"1276658337.1641422557","events":[{"name":"ft_test_ga_v4","params":{"local_test":"testing value2","testing_event_2":"some amazing value"}}]})
+        })
+        return;
+      }
       window.ga.apply(null, args);
     }
   }
