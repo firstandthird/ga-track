@@ -112,9 +112,9 @@ class GATrack {
       console.log(args)
       this.log(args[0])
       this.log(args)
-      fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${args[0].measurement_id}&api_secret=${args[0].api_secret}`, {
+      fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${args[0].body.measurement_id}&api_secret=${args[0].body.api_secret}`, {
         method: "POST",
-        body: JSON.stringify({"client_id":"1276658337.1641422557","events":[{"name":"ft_test_ga_v4","params":{"local_test":"testing value2","testing_event_2":"some amazing value"}}]})
+        body: JSON.stringify({"client_id":`${args[0].payload.client_id}`,"events": `${args[0].payload.events}`})
       })
       return;
     }
