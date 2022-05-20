@@ -24,21 +24,27 @@ class GATrack {
       return;
     }
 
+    this.log(this.isGA())
+    this.log(this.isGAQ())
+    this.log(this.isGTag())
+    this.log(GATrack.isGA())
+    this.log(GATrack.isGAQ())
+    this.log(GATrack.isGTag())
 
-    if(this.isGTag() && this.V4) {
-      const request = {
-        body: {
-          api_secret: api_secret,
-          measurement_id: measurement_id,
-        },
-        payload: {
-          client_id: client_id,
-          events:[{
-            name: event_name,
-            params: event_params
-          }],
-        }
+
+    const request = {
+      body: {
+        api_secret: api_secret,
+        measurement_id: measurement_id,
+      },
+      payload: {
+        client_id: client_id,
+        events:[{
+          name: event_name,
+          params: event_params
+        }],
       }
+    }
 
       return new Promise(resolve => {
         this.log(this.isEnabled());
@@ -48,8 +54,6 @@ class GATrack {
         }
         this.sendData(request);
       })
-    }
-    return;
   }
 
   static async sendEvent(category, action, label) {
@@ -106,6 +110,8 @@ class GATrack {
     if (this.isGTag() && this.V4) {
       console.log(args[0])
       console.log(args)
+      this.log(args[0])
+      this.log(args)
       fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${args[0].measurement_id}&api_secret=${args[0].api_secret}`, {
         method: "POST",
         body: JSON.stringify({"client_id":"1276658337.1641422557","events":[{"name":"ft_test_ga_v4","params":{"local_test":"testing value2","testing_event_2":"some amazing value"}}]})
