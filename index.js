@@ -47,7 +47,7 @@ class GATrack {
           this.log('sendEventV4', 'ga-track disabled');
           return resolve();
         }
-        this.sendData(payload);
+        this.sendData(request);
       })
     }
     return;
