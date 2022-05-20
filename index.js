@@ -25,7 +25,7 @@ class GATrack {
     }
 
 
-    if(GATrack.isGTag() && GATrack.V4) {
+    if(this.isGTag() && this.V4) {
       const request = {
         body: {
           api_secret: api_secret,
@@ -103,7 +103,7 @@ class GATrack {
       return;
     }
 
-    if (GATrack.isGTag() && GATrack.V4) {
+    if (this.isGTag() && this.V4) {
       console.log(args[0])
       console.log(args)
       fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${args[0].measurement_id}&api_secret=${args[0].api_secret}`, {
