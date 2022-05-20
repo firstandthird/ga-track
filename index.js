@@ -103,21 +103,22 @@ class GATrack {
       return;
     }
 
+    if (GATrack.isGTag() && GATrack.V4) {
+      console.log(args[0])
+      console.log(args)
+      fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${args[0].measurement_id}&api_secret=${args[0].api_secret}`, {
+        method: "POST",
+        body: JSON.stringify({"client_id":"1276658337.1641422557","events":[{"name":"ft_test_ga_v4","params":{"local_test":"testing value2","testing_event_2":"some amazing value"}}]})
+      })
+      return;
+    }
+
     if (this.isGTag()) {
       window.gtag.apply(null, args);
       return;
     } else if (this.isGA()) {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
-      }
-      if (GATrack.V4) {
-        console.log(args[0])
-        console.log(args)
-        fetch(`https://www.google-analytics.com/mp/collect?measurement_id=${args[0].measurement_id}&api_secret=${args[0].api_secret}`, {
-          method: "POST",
-          body: JSON.stringify({"client_id":"1276658337.1641422557","events":[{"name":"ft_test_ga_v4","params":{"local_test":"testing value2","testing_event_2":"some amazing value"}}]})
-        })
-        return;
       }
       window.ga.apply(null, args);
     }
