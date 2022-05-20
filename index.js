@@ -107,7 +107,7 @@ class GATrack {
       return;
     }
 
-    if (this.isGTag() && this.V4) {
+    if (this.V4) {
       console.log(args[0])
       console.log(args)
       this.log(args[0])
