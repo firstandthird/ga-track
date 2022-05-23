@@ -56,6 +56,20 @@ class GATrack {
     }
 
     return new Promise(resolve => {
+      let payload = {}
+      if (this.V4) {
+        payload = {
+          events:[{
+            name: action,
+            params: {
+              event_category: category,
+              event_label: label
+            }
+          }],
+        }
+        this.sendData(payload);
+        return;
+      }
       this.log(category, action, label);
 
       if (!this.isEnabled()) {
@@ -68,7 +82,7 @@ class GATrack {
         window._gaq.push(resolve);
       } else if (this.isGTag()) {
         // Gtag check needs to go before since gtag creates a ga variable
-        const payload = {
+        payload = {
           event_category: category,
           event_label: label,
           event_callback: resolve
