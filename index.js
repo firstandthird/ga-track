@@ -102,7 +102,7 @@ class GATrack {
     }
 
     if (this.V4) {
-      gtag("event", `${args[0].events.name}`, args[0].events.params);
+      window.gtag.apply("event", `${args[0].events.name}`, args[0].events.params);
       return;
     } else if (this.isGA()) {
       if (this.trackerName) {
