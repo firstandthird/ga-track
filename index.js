@@ -31,7 +31,6 @@ class GATrack {
 
     if(GATrack.isGTag() && GATrack.V4) {
       const payload = {
-        client_id: client_id,
         events:[{
           name: event_name,
           params: event_params
@@ -102,8 +101,8 @@ class GATrack {
       return;
     }
 
-    if (this.isGTag()) {
-      window.gtag.apply(null, args);
+    if (this.isGTag() && this.V4) {
+      gtag("event", `${args[0].events.name}`, args[0].events.params);
       return;
     } else if (this.isGA()) {
       if (this.trackerName) {
