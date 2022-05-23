@@ -102,8 +102,10 @@ class GATrack {
     }
 
     if (this.V4) {
-      gtag("event", `${args[0].events.name}`, args[0].events.params);
-      return;
+      setTimeout(() => {
+        gtag("event", `${args[0].events.name}`, args[0].events.params);
+        return;
+      }, 3000);
     } else if (this.isGA()) {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
