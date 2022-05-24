@@ -7,48 +7,6 @@ class GATrack {
   static force = null;
   static V4 = false;
 
-  static async sendEventV4(event_name, event_params) {
-    if (GATrack.V4 === false) {
-      console.error('to use sendEventV4 change GATrack.V4 to true')
-      return;
-    }
-
-    if (typeof event_name !== 'string') {
-      console.error("event_name has to be of type string");
-      return;
-    }
-
-    if(event_name === '' || event_name === null) {
-      console.error("event name is required");
-      return;
-    }
-
-    if (event_params.length > 25) {
-      console.error("can't send more than 25 event params")
-      return;
-    }
-
-
-    if(GATrack.V4) {
-      const payload = {
-        events:[{
-          name: event_name,
-          params: event_params
-        }],
-      }
-
-      return new Promise(resolve => {
-        this.log(payload);
-        this.log(this.isEnabled());
-        if (!this.isEnabled()) {
-          this.log('sendEventV4', 'ga-track disabled');
-          return resolve();
-        }
-        this.sendData(payload);
-      })
-    }
-    return;
-  }
 
   static async sendEvent(category, action, label) {
     if (this.prefix) {
@@ -56,8 +14,24 @@ class GATrack {
     }
 
     return new Promise(resolve => {
+      this.log(category, action, label);
+
+      if (!this.isEnabled()) {
+        this.log('sendEvent', 'ga-track disabled');
+        return resolve();
+      }
+
       let payload = {}
       if (this.V4) {
+        if (typeof action !== 'string') {
+          console.error("action has to be of type string");
+          return;
+        }
+    
+        if(action === '' || action === null) {
+          console.error("action is required");
+          return;
+        }
         payload = {
           events:[{
             name: action,
@@ -68,13 +42,6 @@ class GATrack {
           }],
         }
         this.sendData(payload);
-        return;
-      }
-      this.log(category, action, label);
-
-      if (!this.isEnabled()) {
-        this.log('sendEvent', 'ga-track disabled');
-        return resolve();
       }
 
       if (this.isGAQ()) {
@@ -116,15 +83,11 @@ class GATrack {
     }
 
     if (this.V4) {
-      setTimeout(() => {
-        gtag("event", `${args[0].events.name}`, args[0].events.params);
-        return;
-      }, 3000);
+      gtag("event", `${args[0].events.name}`, args[0].events.params);
     } else if (this.isGA()) {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
       }
-      console.log(window.ga.apply(null, args));
       window.ga.apply(null, args);
     }
   }
