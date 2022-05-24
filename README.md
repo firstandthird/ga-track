@@ -32,7 +32,7 @@ import GATrack from 'ga-track';
 ## Methods
 
 ### sendEvent(category,action, label)
-Manually sends an event to Google Analytics. Returns a promise.;
+Manually sends an event to Google Analytics. Returns a promise.
 
 #### Parameters:
 
