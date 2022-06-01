@@ -83,7 +83,11 @@ class GATrack {
     }
 
     if (this.V4) {
-      gtag("event", `${args[0].events.name}`, args[0].events.params);
+      dataLayer.push({
+        'event': `${args[0].events.name}`,
+        'event_category': [args[0].events.params.event_category],
+        'event_label': [args[0].events.params.event_label],
+    });
     } else if (this.isGA()) {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
