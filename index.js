@@ -83,6 +83,7 @@ class GATrack {
     }
 
     if (this.V4) {
+      this.log(args[0])
       this.log(args[0].name)
       this.log(args[0].params)
       dataLayer.push({
