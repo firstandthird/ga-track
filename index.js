@@ -83,9 +83,9 @@ class GATrack {
     }
 
     if (this.V4) {
-      this.log(args[0])
-      this.log(args[0].name)
-      this.log(args[0].params)
+      this.log(args[0].events)
+      this.log(args[0].events[0].name)
+      this.log(args[0].events[0].params)
       dataLayer.push({
         'event': `${args[0].name}`,
         'event_category': [args[0].params.event_category],
