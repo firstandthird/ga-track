@@ -87,7 +87,7 @@ class GATrack {
       this.log(args[0].events)
       this.log(args[0].events.name)
       window.dataLayer.push({
-        'event': `${args[0].events.name}`,
+        'event': `${args[0].events[0].name}`,
         'event_category': [args[0].events[0].params.event_category],
         'event_label': [args[0].events[0].params.event_label],
     });
