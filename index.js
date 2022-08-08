@@ -42,12 +42,12 @@ class GATrack {
     });
   }
 
+  // this now does literally nothing but
+  // call sendData with the same args
+  // it is kept here for now to be consistent
+  // with how we previously did it in leanin-web and optionb /web
   static send(...args) {
     console.log(args);
-    if (this.isGA()) {
-      args.unshift('send');
-    }
-
     return this.sendData(...args);
   }
 
