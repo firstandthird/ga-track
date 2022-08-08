@@ -67,6 +67,7 @@ class GATrack {
       console.log('sendData', 'ga', ...args); //eslint-disable-line no-console
       window.ga.apply(null, args);
     }
+    console.log('sendData', 'failed'); //eslint-disable-line no-console
   }
 
   static isNullOrEnforced(provider) {
