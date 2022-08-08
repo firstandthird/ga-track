@@ -53,17 +53,18 @@ class GATrack {
 
   static sendData(...args) {
     if (!this.isEnabled()) {
-      this.log('sendData', 'ga-track disabled');
+      console.log('sendData', 'ga-track disabled');
       return;
     }
 
     if (this.isGTag()) {
+      console.log('sendData', 'gtag', ...args); //eslint-disable-line no-console
       window.gtag.apply(null, args);
     } else if (this.isGA()) {
       if (this.trackerName) {
         args[0] = `${this.trackerName}.${args[0]}`;
       }
-
+      console.log('sendData', 'ga', ...args); //eslint-disable-line no-console
       window.ga.apply(null, args);
     }
   }
