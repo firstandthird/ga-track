@@ -5,10 +5,9 @@ class GATrack {
   static debug = false;
   static trackerName = '';
   static force = null;
-  static V4 = false;
 
 
-  static async sendEvent(category, action, label) {
+  static async sendEventOldGA(action, category, label) {
     if (this.prefix) {
       category = `${this.prefix}-${category}`;
     }
@@ -21,12 +20,11 @@ class GATrack {
       }
 
       let payload = {}
-      if (this.V4) {
         if (typeof action !== 'string') {
           console.error("action has to be of type string");
           return;
         }
-    
+
         if(action === '' || action === null) {
           console.error("action is required");
           return;
@@ -35,42 +33,58 @@ class GATrack {
           events: {
             name: action,
             params: {
-              event_category: category,
-              event_label: label
+              event_category: category || '',
+              event_label: label || ''
             }
         }
       }
         this.sendData(payload);
+    });
+  }
+
+  static async sendEvent(name, params) {
+
+    if (typeof event_name !== 'string') {
+      console.error("event_name has to be of type string");
+      return;
+    }
+
+    if(event_name === '' || event_name === null) {
+      console.error("event name is required");
+      return;
+    }
+
+    if (event_params.length > 25) {
+      console.error("can't send more than 25 event params")
+      return;
+    }
+
+    if (this.prefix) {
+      name = `${this.prefix}-${name}`;
+    }
+
+
+    return new Promise(resolve => {
+
+      if (!this.isEnabled()) {
+        this.log('sendEvent', 'ga-track disabled');
+        return resolve();
       }
 
-      if (this.isGAQ()) {
-        window._gaq.push(['_trackEvent', category, action, label, null, false]);
-        window._gaq.push(resolve);
-      } else if (this.isGTag()) {
-        // Gtag check needs to go before since gtag creates a ga variable
+      let payload = {}
+
         payload = {
-          event_category: category,
-          event_label: label,
-          event_callback: resolve
-        };
-
-        this.sendData('event', action, payload);
-      } else if (this.isGA()) {
-        const options = {
-          transport: 'beacon',
-          hitCallback: resolve
-        };
-
-        this.sendData('send', 'event', category, action, label, options);
+          events: {
+            name,
+            params
+        }
       }
+        this.sendData(payload);
     });
   }
 
   static send(...args) {
     console.log(args);
-    if (this.isGA()) {
-      args.unshift('send');
-    }
 
     return this.sendData(...args);
   }
@@ -81,20 +95,25 @@ class GATrack {
       return;
     }
 
-    if (this.V4) {
       window.dataLayer = window.dataLayer || [];
-      window.dataLayer.push({
-        'event': `${args[0].events.name}`,
-        'event_category': [args[0].events.params.event_category],
-        'event_label': [args[0].events.params.event_label],
-    });
-    } else if (this.isGA()) {
-      if (this.trackerName) {
-        args[0] = `${this.trackerName}.${args[0]}`;
+      if (usesOldGA) {
+        window.dataLayer.push({
+          'event': `${args[0].events.name}`,
+          'event_category': [args[0].events.params.event_category],
+          'event_label': [args[0].events.params.event_label],
+        });
+      } else {
+        window.dataLayer.push({
+          'event': `${args[0].events.name}`,
+          'event_params': [args[0].events.params]
+        });
       }
-      window.ga.apply(null, args);
-    }
+
   }
+
+static usesOldGA(...args) {
+  return args[0].events.params.event_category || args[0].events.params.event_label;
+}
 
   static isNullOrEnforced(provider) {
     return this.force === null || this.force === provider;

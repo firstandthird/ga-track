@@ -31,50 +31,54 @@ import GATrack from 'ga-track';
 
 ## Methods
 
-### sendEvent(category,action, label)
-Manually sends an event to Google Analytics. Returns a promise.
+
+### sendEvent(name, event_params)
 
 #### Parameters:
-
-
-`action` - {string} - Event's action.
-
-`label` - {string} - Event's label.
-
-### sendEventV4(name, event_params)
 
 `name` - {string}
 
 `event_params` - {Array of strings} - custom or [recommend](https://support.google.com/analytics/answer/9267735) event params ([25 max](https://support.google.com/analytics/answer/9267744?hl=en)).
 V4
-```javascript
-GaTrack.G4 = true;
+
 ```
-```javascript
-GATrack.sendEventV4('read_article',[{name: 'author', value: 'David Mitchell'}, {name: 'title', value: 'Cloud Atlas'}]);
+GATrack.sendEvent('read_article',[{name: 'author', value: 'David Mitchell'}, {name: 'title', value: 'Cloud Atlas'}]);
 ```
 
-### sendData()
 
-Safely pass data to Google Analytics:
+### sendEventOldGA(action, category, label)
+if you want to create a custom event using the old GA events structure you can use this method
 
-```javascript
-GATrack.sendData('set', 'dimension2', 'member');
+the event will be send using this structure:
 ```
+events: {
+  name: action
+  params: {
+    event_category: category
+    event_label: label
+  }
+}
+```
+
+#### Parameters:
+
+`action` - {string}
+
+`category` - {string}
+
+`label` - {string}
+
+```
+GATrack.sendEventOldGA('click', 'books', 'sci-fi' );
+```
+
 
 ## Options
 
-### V4
-```js
-import GATrack from 'ga-track';
-
-GATrack.V4 = true;
-```
-Allows you to use the [V4](#sendeventv4) version of sendEvent()
 
 ### Debug Mode
 
-```js
+```
 import GATrack from 'ga-track';
 
 GATrack.debug = true;
@@ -88,17 +92,6 @@ import GATrack from 'ga-track';
 GATrack.trackerName = 'SomeTrackerName';
 ```
 
-### Forcing a provider
-
-Supported values: `''`, `'ga'`, `'gaq'`, `'gtag'`
-
-This is useful if you have multiple tags on the same page but only want to use one of them.
-
-```js
-import GATrack from 'ga-track';
-
-GATrack.force = 'ga';
-```
 
 ### Category Prefix
 
