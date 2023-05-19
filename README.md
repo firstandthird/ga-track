@@ -29,6 +29,18 @@ yarn add ga-track
 import GATrack from 'ga-track';
 ```
 
+Any element with `data-ga-track` as an attribute, will be tracked on click. Here's a quick reference:
+
+|  Attribute             | Description  | Default  |
+|------------------------|-----------------------|---|
+| `data-ga-track`        | Needed for autotracking. If a value is given it serves as the event's name. | `ga-track`  |
+| `data-ga-track-name`        | Name of the event. This Field is required. | `click`    |
+| `data-ga-track-params`        | Params of the event. This Field is required. | `{ name: `Element's textContent`, value: `Element's href` }`  |
+| `data-ga-track-label`  | Label of the event. Optional Field. |  not set |
+| `data-ga-track-action` | Action of the event. Optional Field. |  not set |
+| `data-ga-track-category` | Category of the event. Optional Field. |  not set |
+| `data-ga-track-href`   | Should this be `false` the link **won't** be navigated to. Otherwise `ga-track` will wait till the track happens and then navigates.  |  Element's `href` |
+
 ## Methods
 
 
