@@ -99,8 +99,8 @@ class GATrack {
 
     return new Promise(resolve => {
 
-      if (!this.isEnabled()) {
-        this.log('sendEvent', 'ga-track disabled');
+      if (!GATrack.isEnabled()) {
+        GATrack.log('sendEvent', 'ga-track disabled');
         return resolve();
       }
 
@@ -168,6 +168,10 @@ class GATrack {
     });
   }
 
+  // GATrack now does literally nothing but
+  // call sendData with the same args
+  // it is kept here for now to be consistent
+  // with how we previously did it in leanin-web and optionb /web
   static send(...args) {
     console.log(args);
 
@@ -175,8 +179,8 @@ class GATrack {
   }
 
   static sendData(...args) {
-    if (!this.isEnabled()) {
-      this.log('sendData', 'ga-track disabled');
+    if (!GATrack.isEnabled()) {
+      console.log('sendData', 'ga-track disabled');
       return;
     }
 
@@ -201,28 +205,28 @@ class GATrack {
   }
 
   static isNullOrEnforced(provider) {
-    return this.force === null || this.force === provider;
+    return GATrack.force === null || GATrack.force === provider;
   }
 
   static isGAQ() {
     // eslint-disable-line no-underscore-dangle
-    return (typeof window._gaq !== 'undefined') && this.isNullOrEnforced('gaq');
+    return (typeof window._gaq !== 'undefined') && GATrack.isNullOrEnforced('gaq');
   }
 
   static isGTag() {
-    return (typeof window.gtag !== 'undefined') && this.isNullOrEnforced('gtag');
+    return (typeof window.gtag !== 'undefined') && GATrack.isNullOrEnforced('gtag');
   }
 
   static isGA() {
-    return (typeof window.ga !== 'undefined') && this.isNullOrEnforced('ga');
+    return (typeof window.ga !== 'undefined') && GATrack.isNullOrEnforced('ga');
   }
 
   static isEnabled() {
-    return this.isGA || this.isGTag || this.isGAQ;
+    return GATrack.isGA || GATrack.isGTag || GATrack.isGAQ;
   }
 
   static log(...args) {
-    if (this.debug) {
+    if (GATrack.debug) {
       console.log('GATRACK', ...args); //eslint-disable-line no-console
     }
   }
