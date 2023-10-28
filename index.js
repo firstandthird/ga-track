@@ -136,7 +136,14 @@ const GATrack = {
       };
     }
 
-    GATrack.sendEvent(data.category, data.action, data.label, callback, options.timeout);
+    try {
+      GATrack.sendEvent(data.category, data.action, data.label, callback, options.timeout);
+    } catch (e) {
+      // Avoid errors tracking to prevent clicks for good
+      if (typeof callback === 'function') {
+        callback();
+      }
+    }
   },
 
   autotrack() {
